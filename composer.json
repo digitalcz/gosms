@@ -47,7 +47,7 @@
     }
   },
   "scripts": {
-    "test": "phpunit",
+    "tests": "phpunit",
     "phpstan": "phpstan analyse",
     "cs": "phpcs",
     "csfix": "phpcbf"

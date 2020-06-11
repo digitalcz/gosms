@@ -6,5 +6,4 @@ namespace DigitalCz\GoSms\Exception;
 
 class ClientNotSuccessException extends RuntimeException
 {
-
 }
