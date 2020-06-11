@@ -16,6 +16,6 @@ class StringUtils
             throw new RuntimeException(sprintf('Failed to parse id from link %s', $link));
         }
 
-        return (int)end($linkParts);
+        return (int) end($linkParts);
     }
 }
