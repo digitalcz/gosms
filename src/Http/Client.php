@@ -68,10 +68,10 @@ class Client
         $accessToken = $this->tokenProvider->getAccessToken($this->clientCredentials);
 
         if ($accessToken === null) {
-            $request = $this->requestFactory->requestAccessToken($this->clientCredentials);
-            $response = $this->httpClient->sendRequest($request);
+            $requestToken = $this->requestFactory->requestAccessToken($this->clientCredentials);
+            $responseToken = $this->httpClient->sendRequest($requestToken);
 
-            $accessToken = $this->responseObjectFactory->createAccessToken($response);
+            $accessToken = $this->responseObjectFactory->createAccessToken($responseToken);
 
             $this->tokenProvider->setAccessToken($this->clientCredentials, $accessToken);
         }

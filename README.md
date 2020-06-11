@@ -41,7 +41,7 @@ You can provide PSR18 http client (and PSR17 factories) when creating instance o
 // example
 $symfonyHttpClient = Symfony\Component\HttpClient\Psr18Client();
 
-$factory = new DigitalCz\GoSms\Request\RequestFactory(
+$register = new DigitalCz\GoSms\Request\RequestFactory(
     $symfonyHttpClient, 
     $symfonyHttpClient   // symfony PSR18 client is also PSR17 factory
 );
@@ -109,7 +109,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
-$ composer tests
+$ composer test
 $ composer phpstan
 $ composer cs       # codesniffer
 $ composer csfix    # code beautifier
