@@ -5,44 +5,44 @@ declare(strict_types=1);
 namespace DigitalCz\GoSms\Response;
 
 use DigitalCz\GoSms\Exception\RuntimeException;
-use DigitalCz\GoSms\Utils\StringUtils;
 use DigitalCz\GoSms\ValueObject\AccessToken;
 use DigitalCz\GoSms\ValueObject\DetailMessage;
 use DigitalCz\GoSms\ValueObject\DetailOrganization;
 use DigitalCz\GoSms\ValueObject\RepliesMessage;
+use DigitalCz\GoSms\ValueObject\SentMessage;
 use Psr\Http\Message\ResponseInterface;
 
-class ResponseObjectFactory
+class ResponseObjectResolver implements ResponseResolverInterface
 {
-    public function createAccessToken(ResponseInterface $response): AccessToken
+    public function resolveAccessToken(ResponseInterface $response): AccessToken
     {
         $data = $this->parseBody($response);
 
         return AccessToken::fromArray($data);
     }
 
-    public function createDetailOrganization(ResponseInterface $response): DetailOrganization
+    public function resolveDetailOrganization(ResponseInterface $response): DetailOrganization
     {
         $data = $this->parseBody($response);
 
         return DetailOrganization::fromArray($data);
     }
 
-    public function createSendMessage(ResponseInterface $response): int
+    public function resolveSendMessage(ResponseInterface $response): SentMessage
     {
         $data = $this->parseBody($response);
 
-        return StringUtils::resolveIdFromLink($data['link']);
+        return SentMessage::fromArray($data);
     }
 
-    public function createDetailMessage(ResponseInterface $response): DetailMessage
+    public function resolveDetailMessage(ResponseInterface $response): DetailMessage
     {
         $data = $this->parseBody($response);
 
         return DetailMessage::fromArray($data);
     }
 
-    public function createRepliesMessage(ResponseInterface $response): RepliesMessage
+    public function resolveRepliesMessage(ResponseInterface $response): RepliesMessage
     {
         $data = $this->parseBody($response);
 

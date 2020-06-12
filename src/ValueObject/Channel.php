@@ -40,6 +40,18 @@ class Channel
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'sourceNumber' => $this->getSourceNumber(),
+        ];
+    }
+
     public function getId(): int
     {
         return $this->id;

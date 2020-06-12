@@ -7,7 +7,7 @@ namespace DigitalCz\GoSms\Http;
 use DigitalCz\GoSms\Auth\AccessTokenProviderInterface;
 use DigitalCz\GoSms\Exception\ClientNotSuccessException;
 use DigitalCz\GoSms\Request\RequestFactory;
-use DigitalCz\GoSms\Response\ResponseObjectFactory;
+use DigitalCz\GoSms\Response\ResponseResolverInterface;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -36,7 +36,7 @@ class Client
     protected $requestFactory;
 
     /**
-     * @var ResponseObjectFactory
+     * @var ResponseResolverInterface
      */
     protected $responseObjectFactory;
 
@@ -45,7 +45,7 @@ class Client
         ClientInterface $httpClient,
         AccessTokenProviderInterface $tokenProvider,
         RequestFactory $requestFactory,
-        ResponseObjectFactory $responseObjectFactory
+        ResponseResolverInterface $responseObjectFactory
     ) {
         $this->clientCredentials = $clientCredentials;
         $this->httpClient = $httpClient;
@@ -71,7 +71,7 @@ class Client
             $requestToken = $this->requestFactory->requestAccessToken($this->clientCredentials);
             $responseToken = $this->httpClient->sendRequest($requestToken);
 
-            $accessToken = $this->responseObjectFactory->createAccessToken($responseToken);
+            $accessToken = $this->responseObjectFactory->resolveAccessToken($responseToken);
 
             $this->tokenProvider->setAccessToken($this->clientCredentials, $accessToken);
         }

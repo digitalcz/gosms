@@ -50,6 +50,19 @@ class Delivery
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'isDelivered' => $this->isDelivered(),
+            'smsCount' => $this->getSmsCount(),
+            'deliveredSmsCount' => $this->getDeliveredSmsCount(),
+            'recipients' => $this->getRecipients(),
+        ];
+    }
+
     public function isDelivered(): bool
     {
         return $this->isDelivered;

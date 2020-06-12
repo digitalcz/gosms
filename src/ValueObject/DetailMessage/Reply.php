@@ -33,6 +33,17 @@ class Reply
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'hasReplies' => $this->isHasReplies(),
+            'repliesCount' => $this->getRepliesCount(),
+        ];
+    }
+
     public function isHasReplies(): bool
     {
         return $this->hasReplies;

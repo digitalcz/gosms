@@ -33,6 +33,17 @@ class Links
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'self' => $this->getSelf(),
+            'replies' => $this->getReplies(),
+        ];
+    }
+
     public function getSelf(): string
     {
         return $this->self;
