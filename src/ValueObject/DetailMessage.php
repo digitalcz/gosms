@@ -99,6 +99,25 @@ class DetailMessage
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'messageType' => $this->getMessageType(),
+            'message' => $this->getMessage()->toArray(),
+            'recipients' => $this->getRecipients()->toArray(),
+            'channel' => $this->getChannel(),
+            'stats' => $this->getStats()->toArray(),
+            'sendingInfo' => $this->getSendingInfo()->toArray(),
+            'delivery' => $this->getDelivery()->toArray(),
+            'reply' => $this->getReply()->toArray(),
+            'links' => $this->getLinks()->toArray(),
+        ];
+    }
+
+
     public function getMessageType(): string
     {
         return $this->messageType;

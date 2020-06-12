@@ -42,6 +42,23 @@ class DetailOrganization
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        $channels = [];
+
+        foreach ($this->getChannels() as $channel) {
+            $channels[] = $channel->toArray();
+        }
+
+        return [
+            'currentCredit' => $this->getCurrentCredit(),
+            'channels' => $channels,
+        ];
+    }
+
     public function getCurrentCredit(): float
     {
         return $this->currentCredit;

@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms;
 
+use DigitalCz\GoSms\Auth\AccessTokenProviderInterface;
 use DigitalCz\GoSms\Http\Client;
 use DigitalCz\GoSms\Request\RequestFactory;
-use DigitalCz\GoSms\Response\ResponseObjectFactory;
+use DigitalCz\GoSms\Response\ResponseObjectResolver;
+use DigitalCz\GoSms\Response\ResponseResolverInterface;
+use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use DigitalCz\GoSms\ValueObject\DetailMessage;
 use DigitalCz\GoSms\ValueObject\DetailOrganization;
 use DigitalCz\GoSms\ValueObject\RepliesMessage;
 use DigitalCz\GoSms\ValueObject\SendMessage;
+use DigitalCz\GoSms\ValueObject\SentMessage;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 final class GoSms
 {
@@ -25,18 +34,33 @@ final class GoSms
     private $requestFactory;
 
     /**
-     * @var ResponseObjectFactory
+     * @var ResponseResolverInterface
      */
     private $responseObjectFactory;
 
     public function __construct(
-        Client $client,
-        RequestFactory $requestFactory,
-        ResponseObjectFactory $responseObjectFactory
+        string $clientId,
+        string $clientSecret,
+        AccessTokenProviderInterface $accessTokenProvider,
+        ClientInterface $httpClient = null,
+        RequestFactoryInterface $httpRequestFactory = null,
+        StreamFactoryInterface $httpStreamFactory = null,
+        ResponseResolverInterface $responseResolver = null
     ) {
-        $this->client = $client;
-        $this->requestFactory = $requestFactory;
-        $this->responseObjectFactory = $responseObjectFactory;
+        $httpClient = $httpClient ?? Psr18ClientDiscovery::find();
+        $httpRequestFactory = $httpRequestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
+        $httpStreamFactory = $httpStreamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
+
+        $this->requestFactory = new RequestFactory($httpRequestFactory, $httpStreamFactory);
+        $this->responseObjectFactory = $responseResolver ?? new ResponseObjectResolver();
+
+        $this->client = new Client(
+            new ClientCredentials($clientId, $clientSecret),
+            $httpClient,
+            $accessTokenProvider,
+            $this->requestFactory,
+            $this->responseObjectFactory
+        );
     }
 
     public function getDetailOrganization(): DetailOrganization
@@ -44,15 +68,15 @@ final class GoSms
         $request = $this->requestFactory->requestDetailOrganization();
         $response = $this->client->request($request);
 
-        return $this->responseObjectFactory->createDetailOrganization($response);
+        return $this->responseObjectFactory->resolveDetailOrganization($response);
     }
 
-    public function sendMessage(SendMessage $message): int
+    public function sendMessage(SendMessage $message): SentMessage
     {
         $request = $this->requestFactory->requestSendMessage($message);
         $response = $this->client->request($request);
 
-        return $this->responseObjectFactory->createSendMessage($response);
+        return $this->responseObjectFactory->resolveSendMessage($response);
     }
 
     public function detailMessage(int $messageId): DetailMessage
@@ -60,7 +84,7 @@ final class GoSms
         $request = $this->requestFactory->requestDetailMessage($messageId);
         $response = $this->client->request($request);
 
-        return $this->responseObjectFactory->createDetailMessage($response);
+        return $this->responseObjectFactory->resolveDetailMessage($response);
     }
 
     public function deleteMessage(int $messageId): void
@@ -74,6 +98,6 @@ final class GoSms
         $request = $this->requestFactory->requestRepliesMessage($messageId);
         $response = $this->client->request($request);
 
-        return $this->responseObjectFactory->createRepliesMessage($response);
+        return $this->responseObjectFactory->resolveRepliesMessage($response);
     }
 }

@@ -53,6 +53,19 @@ class SendingInfo
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'status' => $this->getStatus(),
+            'expectedSendStart' => $this->getExpectedSendStart()->format('c'),
+            'sentStart' => $this->getSentStart()->format('c'),
+            'sentFinish' => $this->getSentFinish()->format('c'),
+        ];
+    }
+
     public function getStatus(): string
     {
         return $this->status;

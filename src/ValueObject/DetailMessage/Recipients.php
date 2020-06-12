@@ -46,6 +46,18 @@ class Recipients
     }
 
     /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'sent' => $this->getSent(),
+            'notSent' => $this->getNotSent(),
+            'invalid' => $this->getInvalid(),
+        ];
+    }
+
+    /**
      * @return array<string>
      */
     public function getSent(): array

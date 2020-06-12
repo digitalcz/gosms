@@ -36,6 +36,17 @@ class Message
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'fulltext' => $this->getFulltext(),
+            'parts' => $this->getParts(),
+        ];
+    }
+
     public function getFulltext(): string
     {
         return $this->fulltext;
