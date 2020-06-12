@@ -16,7 +16,7 @@ class RequestFactory
 {
     public const API_TOKEN = 'https://app.gosms.cz/oauth/v2/token';
     public const API_DETAIL_ORGANIZATION = 'https://app.gosms.cz/api/v1/';
-    public const API_SEND_MESSAGE = 'https://app.gosms.cz/api/v1/messages/';
+    public const API_SEND_MESSAGE = 'https://app.gosms.cz/api/v1/messages';
     public const API_DETAIL_MESSAGE = 'https://app.gosms.cz/api/v1/messages/%s';
     public const API_DELETE_MESSAGE = 'https://app.gosms.cz/api/v1/messages/%s';
     public const API_REPLIES_MESSAGE = 'https://app.gosms.cz/api/v1/messages/%s/replies';

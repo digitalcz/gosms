@@ -36,6 +36,17 @@ class RepliesMessage
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'reply' => $this->getReply()->toArray(),
+            'links' => $this->getLinks()->toArray(),
+        ];
+    }
+
     public function getReply(): Reply
     {
         return $this->reply;

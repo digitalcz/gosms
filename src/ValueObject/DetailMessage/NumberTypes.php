@@ -68,6 +68,22 @@ class NumberTypes
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'czMobile' => $this->getCzMobile(),
+            'czOther' => $this->getCzOther(),
+            'sk' => $this->getSk(),
+            'pl' => $this->getPl(),
+            'hu' => $this->getHu(),
+            'ro' => $this->getRo(),
+            'other' => $this->getOther(),
+        ];
+    }
+
     public function getCzMobile(): int
     {
         return $this->czMobile;

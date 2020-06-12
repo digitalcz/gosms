@@ -67,6 +67,21 @@ class Stats
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'price' => $this->getPrice(),
+            'hasDiacritics' => $this->isHasDiacritics(),
+            'smsCount' => $this->getSmsCount(),
+            'messagePartsCount' => $this->getMessagePartsCount(),
+            'recipientsCount' => $this->getRecipientsCount(),
+            'numberTypes' => $this->getNumberTypes()->toArray(),
+        ];
+    }
+
     public function getPrice(): float
     {
         return $this->price;

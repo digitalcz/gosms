@@ -33,6 +33,17 @@ class Links
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'message' => $this->getMessage(),
+            'replies' => $this->getReplies(),
+        ];
+    }
+
     public function getMessage(): string
     {
         return $this->message;
