@@ -16,6 +16,12 @@
       "email": "info@digital.cz",
       "homepage": "https://digital.cz",
       "role": "Developer"
+    },
+    {
+      "name": "Filip Klouček",
+      "email": "filip.kloucek@gmail.com",
+      "homepage": "https://github.com/fidovo",
+      "role": "Developer"
     }
   ],
   "require": {
