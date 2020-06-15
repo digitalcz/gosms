@@ -54,11 +54,9 @@ class ResponseObjectResolver implements ResponseResolverInterface
      */
     private function parseBody(ResponseInterface $httpResponse): array
     {
-        $json = $httpResponse->getBody()->getContents();
+        $body = json_decode((string)$httpResponse->getBody(), true);
 
-        $body = json_decode($json, true);
-
-        if ($body === false) {
+        if ($body === false || $body === null) {
             throw new RuntimeException('Failed to parse result json');
         }
 

@@ -52,6 +52,9 @@ services:
 You can use DigitalCz\GoSms\Auth\AccessTokenProvider which use PSR6 CachingInterface (see https://www.php-fig.org/psr/psr-6/) for automatically store token.
 Or you can implement your own by DigitalCz\GoSms\Auth\AccessTokenProviderInterface
 
+Client used value objects for Requests and Responses. If you want working with your own objects, you can implement
+DigitalCz\GoSms\Response\ResponseResolverInterface
+
 ```php
 // access token provider via Symfony
 $psr6Cache = new Symfony\Component\Cache\Adapter\FilesystemAdapter();
@@ -109,7 +112,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
-$ composer test
+$ composer tests
 $ composer phpstan
 $ composer cs       # codesniffer
 $ composer csfix    # code beautifier

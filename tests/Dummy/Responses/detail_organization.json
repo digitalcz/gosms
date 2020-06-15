@@ -1,0 +1,10 @@
+{
+  "currentCredit": 23.09,
+  "channels": [
+    {
+      "id": 1,
+      "name": "Název kanálu",
+      "sourceNumber": "GoSMS"
+    }
+  ]
+}

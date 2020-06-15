@@ -4,7 +4,15 @@ All notable changes to `gosms` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [0.1.3] - 2020-06-12
+## [0.2.1] - 2020-06-16
+
+### Added
+- Add more tests
+
+### Fixed
+- Some fixies
+
+## [0.2.0] - 2020-06-12
 
 ### Added
 - Add ResponseResolverInterface for create custom response resolver

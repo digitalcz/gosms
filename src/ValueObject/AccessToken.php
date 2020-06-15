@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms\ValueObject;
 
-use DateTimeImmutable;
-
 class AccessToken
 {
     /**
@@ -17,11 +15,6 @@ class AccessToken
      * @var int
      */
     private $expiresIn;
-
-    /**
-     * @var DateTimeImmutable
-     */
-    private $expiresAt;
 
     /**
      * @var string
@@ -72,44 +65,14 @@ class AccessToken
         return $this->accessToken;
     }
 
-    public function setAccessToken(string $accessToken): void
-    {
-        $this->accessToken = $accessToken;
-    }
-
-    public function isExpired(): bool
-    {
-        return $this->expiresAt->modify('-5 minutes')->getTimestamp() < time();
-    }
-
     public function getExpiresIn(): int
     {
         return $this->expiresIn;
     }
 
-    public function setExpiresIn(int $expiresIn): void
-    {
-        $this->expiresIn = $expiresIn;
-    }
-
-    public function getExpiresAt(): DateTimeImmutable
-    {
-        return $this->expiresAt;
-    }
-
-    public function setExpiresAt(DateTimeImmutable $expiresAt): void
-    {
-        $this->expiresAt = $expiresAt;
-    }
-
     public function getTokenType(): string
     {
         return $this->tokenType;
-    }
-
-    public function setTokenType(string $tokenType): void
-    {
-        $this->tokenType = $tokenType;
     }
 
     public function getScope(): string
