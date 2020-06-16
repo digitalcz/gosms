@@ -9,7 +9,6 @@ use DigitalCz\GoSms\Dummy\Auth\InMemoryCache;
 use DigitalCz\GoSms\Exception\ClientNotSuccessException;
 use DigitalCz\GoSms\Request\RequestFactory;
 use DigitalCz\GoSms\Response\ResponseObjectResolver;
-use DigitalCz\GoSms\ValueObject\AccessToken;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Mock\Client as HttpClient;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms\Request;
 
-use DigitalCz\GoSms\Exception\RuntimeException;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use DigitalCz\GoSms\ValueObject\SendMessage;
 use Http\Discovery\Psr17FactoryDiscovery;
