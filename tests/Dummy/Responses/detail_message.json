@@ -1,0 +1,63 @@
+{
+  "messageType": "SMS",
+  "message": {
+    "fulltext": "Hello World!",
+    "parts": ["Hello World!"]
+  },
+  "recipients": {
+    "sent": ["+420111222333", "+420111222444"],
+    "notSent": ["+420111222555"],
+    "invalid": ["+420111222666"]
+  },
+  "channel": 1,
+  "stats": {
+    "price":  0.739,
+    "hasDiacritics": false,
+    "smsCount": 1,
+    "messagePartsCount": 1,
+    "recipientsCount": 1,
+    "numberTypes": {
+      "czMobile": 1,
+      "czOther": 0,
+      "sk": 0,
+      "pl": 0,
+      "hu": 0,
+      "ro": 0,
+      "other": 0
+    }
+  },
+  "sendingInfo": {
+    "status": "IN_PROGRESS|FAILED|SENT",
+    "expectedSendStart": "2014-12-24T21:23:00+02:00",
+    "sentStart": "2014-12-24T21:23:00+02:00",
+    "sentFinish": "2014-12-24T21:23:01+02:00"
+  },
+  "delivery": {
+    "isDelivered": false,
+    "smsCount": 3,
+    "deliveredSmsCount": 1,
+    "recipients": {
+      "delivered": {
+        "+420111222333": "2014-12-24T21:23:00+02:00"
+      },
+      "undelivered": {
+        "+420111222444": "2014-12-24T21:24:00+02:00"
+      },
+      "delivering": {
+        "+420111222555": {
+          "deliveredCount": 0,
+          "undeliveredCount": 0,
+          "deliveringCount": 1
+        }
+      }
+    }
+  },
+  "reply": {
+    "hasReplies": true,
+    "repliesCount": 0
+  },
+  "links": {
+    "self": "api/v1/messages/1",
+    "replies": "api/v1/messages/1/replies"
+  }
+}

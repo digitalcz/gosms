@@ -13,7 +13,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Client
+final class Client
 {
     /**
      * @var ClientCredentials
@@ -84,7 +84,7 @@ class Client
     protected function checkResponse(ResponseInterface $response): void
     {
         if (!in_array($response->getStatusCode(), [200, 201])) {
-            throw new ClientNotSuccessException($response->getBody()->getContents(), $response->getStatusCode());
+            throw new ClientNotSuccessException((string)$response->getBody(), $response->getStatusCode());
         }
     }
 }

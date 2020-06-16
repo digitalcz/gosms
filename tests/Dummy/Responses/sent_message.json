@@ -1,0 +1,6 @@
+{
+  "recipients": {
+    "invalid": ["Peter"]
+  },
+  "link": "api/v1/messages/1"
+}
