@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="gosms">
-    <description>The coding standard of register-adries package</description>
-    <arg value="p" />
+    <description>The coding standard of gosms</description>
 
     <file>src</file>
     <file>tests</file>
@@ -13,6 +12,12 @@
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
         <properties>
             <property name="searchAnnotations" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
         </properties>
     </rule>
 </ruleset>
