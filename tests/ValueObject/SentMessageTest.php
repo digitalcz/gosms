@@ -30,4 +30,18 @@ class SentMessageTest extends TestCase
         self::assertEquals(new Recipients(['Peter']), $sentMessage->getRecipients());
         self::assertSame(1, $sentMessage->getMessageId());
     }
+
+    public function testToArray(): void
+    {
+        $array =  [
+            'recipients' => [
+                'invalid' => ['Peter']
+            ],
+            'link' => 'api/v1/messages/1'
+        ];
+
+        $sentMessage = SentMessage::fromArray($array);
+
+        self::assertSame($array, $sentMessage->toArray());
+    }
 }

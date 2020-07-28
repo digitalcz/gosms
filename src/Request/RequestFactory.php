@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms\Request;
 
+use DigitalCz\GoSms\Exception\RuntimeException;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use DigitalCz\GoSms\ValueObject\SendMessage;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
-use RuntimeException;
 
 class RequestFactory
 {

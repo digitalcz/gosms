@@ -79,9 +79,4 @@ class AccessToken
     {
         return $this->scope;
     }
-
-    public function setScope(string $scope): void
-    {
-        $this->scope = $scope;
-    }
 }
