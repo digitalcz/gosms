@@ -2,9 +2,8 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
+[![CI](https://github.com/digitalcz/gosms/workflows/CI/badge.svg)]()
+[![codecov](https://codecov.io/gh/digitalcz/gosms/branch/master/graph/badge.svg)](https://codecov.io/gh/digitalcz/gosms)
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Provides communication with GoSMS.cz (see https://doc.gosms.cz/) in PHP via PSR-18 http client. 
