@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms\Request;
 
+use DigitalCz\GoSms\Exception\RuntimeException;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use DigitalCz\GoSms\ValueObject\SendMessage;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -64,6 +65,12 @@ class RequestFactoryTest extends TestCase
         self::assertEquals('POST', $request->getMethod());
         self::assertEquals($expectedBody, $request->getBody());
         self::assertEquals('application/json', $request->getHeaderLine('Content-Type'));
+
+        $this->expectException(RuntimeException::class);
+
+        $message = new SendMessage('Hans, We need contribution!', ["text" => "\xB1\x31"], 1);
+
+        $requestFactory->requestSendMessage($message);
     }
 
     public function testRequestDetailMessage(): void

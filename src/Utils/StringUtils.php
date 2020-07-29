@@ -12,10 +12,6 @@ class StringUtils
     {
         $linkParts = explode('/', $link);
 
-        if (!is_array($linkParts)) {
-            throw new RuntimeException(sprintf('Failed to parse id from link %s', $link));
-        }
-
         $id = end($linkParts);
 
         if (!intval($id)) {

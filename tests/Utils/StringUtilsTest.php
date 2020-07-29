@@ -14,12 +14,15 @@ class StringUtilsTest extends TestCase
         $this->assertEquals(666, StringUtils::resolveIdFromLink('api/v1/messages/666'));
     }
 
-    public function testException(): void
+    public function testException1(): void
     {
         $this->expectException(RuntimeException::class);
 
         StringUtils::resolveIdFromLink('api/v1/messages/gosms');
+    }
 
+    public function testException2(): void
+    {
         $this->expectException(RuntimeException::class);
 
         StringUtils::resolveIdFromLink('gosms');
