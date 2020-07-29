@@ -6,6 +6,9 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [1.0.0] - 2020-06-29
 
+### Added
+- Add more tests
+
 ### Changed
 - Update documentation, dependency
 
