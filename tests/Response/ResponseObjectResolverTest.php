@@ -28,7 +28,7 @@ class ResponseObjectResolverTest extends TestCase
 
         $responseResolver = new ResponseObjectResolver();
 
-        $this->assertEquals($token, $responseResolver->resolveAccessToken($response));
+        self::assertEquals($token, $responseResolver->resolveAccessToken($response));
     }
 
     public function testResolveDetailOrganization(): void
@@ -43,7 +43,7 @@ class ResponseObjectResolverTest extends TestCase
 
         $responseResolver = new ResponseObjectResolver();
 
-        $this->assertEquals($object, $responseResolver->resolveDetailOrganization($response));
+        self::assertEquals($object, $responseResolver->resolveDetailOrganization($response));
     }
 
     public function testResolveSendMessage(): void
@@ -58,7 +58,7 @@ class ResponseObjectResolverTest extends TestCase
 
         $responseResolver = new ResponseObjectResolver();
 
-        $this->assertEquals($object, $responseResolver->resolveSendMessage($response));
+        self::assertEquals($object, $responseResolver->resolveSendMessage($response));
     }
 
     public function testResolveDetailMessage(): void
@@ -132,7 +132,7 @@ class ResponseObjectResolverTest extends TestCase
 
         $responseResolver = new ResponseObjectResolver();
 
-        $this->assertEquals($object, $responseResolver->resolveDetailMessage($response));
+        self::assertEquals($object, $responseResolver->resolveDetailMessage($response));
     }
 
     public function testResolveRepliesMessage(): void
@@ -163,7 +163,7 @@ class ResponseObjectResolverTest extends TestCase
 
         $responseResolver = new ResponseObjectResolver();
 
-        $this->assertEquals($object, $responseResolver->resolveRepliesMessage($response));
+        self::assertEquals($object, $responseResolver->resolveRepliesMessage($response));
     }
 
     public function testFailedParseBody(): void
@@ -174,6 +174,7 @@ class ResponseObjectResolverTest extends TestCase
         $responseResolver = new ResponseObjectResolver();
 
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('"Syntax error" when parsing response body: "bad request"');
 
         $responseResolver->resolveDetailOrganization($response);
     }
