@@ -4,10 +4,15 @@ All notable changes to `gosms` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## Unreleased
+## [1.1.0] - 2020-02-18
 
 ### Added
 - Add PHP8 compatibility
+
+## [1.0.1] - 2020-11-23
+
+### Fixed
+- Improve failed parsing exception
 
 ## [1.0.0] - 2020-06-29
 
