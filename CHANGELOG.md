@@ -4,6 +4,11 @@ All notable changes to `gosms` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## Unreleased
+
+### Added
+- Add PHP8 compatibility
+
 ## [1.0.0] - 2020-06-29
 
 ### Added
