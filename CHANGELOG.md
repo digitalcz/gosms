@@ -7,7 +7,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## [1.2.0] - 2024-05-16
 
 ### Added
-- Add PHP8.3 compatibility
+- Add PHP8.X compatibility
+- Add psr/simple-cache 2.0.0 compatibility
 
 ## [1.1.0] - 2020-02-18
 
