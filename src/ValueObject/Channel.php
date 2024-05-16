@@ -6,20 +6,11 @@ namespace DigitalCz\GoSms\ValueObject;
 
 class Channel
 {
-    /**
-     * @var int
-     */
-    private $id;
+    private int $id;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $sourceNumber;
+    private string $sourceNumber;
 
     public function __construct(int $id, string $name, string $sourceNumber)
     {
@@ -33,11 +24,7 @@ class Channel
      */
     public static function fromArray(array $data): Channel
     {
-        return new self(
-            $data['id'],
-            $data['name'],
-            $data['sourceNumber']
-        );
+        return new self($data['id'], $data['name'], $data['sourceNumber']);  // @phpstan-ignore-line
     }
 
     /**

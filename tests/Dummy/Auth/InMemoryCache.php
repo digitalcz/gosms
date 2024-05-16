@@ -11,83 +11,74 @@ class InMemoryCache implements CacheInterface
     /**
      * @var array<mixed>
      */
-    private $memory = [];
+    private array $cache = [];
 
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function get($key, $default = null)
+    public function get(mixed $key, mixed $default = null): mixed
     {
-        return isset($this->memory[$key]) ? $this->memory[$key] : null;
+        return $this->has($key) ? $this->cache[$key] : $default;
+    }
+
+    public function set(mixed $key, mixed $value, null|int|\DateInterval $ttl = null): bool // phpcs:ignore
+    {
+        $this->cache[$key] = $value;
+
+        return true;
+    }
+
+    public function delete(mixed $key): bool
+    {
+        unset($this->cache[$key]);
+
+        return true;
+    }
+
+    public function clear(): bool
+    {
+        $this->cache = [];
+
+        return true;
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
-     * @param null $ttl
-     * @return bool|void
+     * @param  array|mixed[] $keys
+     * @return array|mixed[]
      */
-    public function set($key, $value, $ttl = null)
+    public function getMultiple(iterable $keys, mixed $default = null): array
     {
-        $this->memory[$key] = $value;
+        $values = [];
+        foreach ($keys as $key) {
+            $values[$key] = $this->get($key, $default); // @phpstan-ignore-line
+        }
+
+        return $values;
     }
 
     /**
-     * @param string $key
-     * @return bool|void
+     * @param  array|mixed[] $values
      */
-    public function delete($key)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool // phpcs:ignore
     {
-        reset($this->memory[$key]);
+        foreach ($values as $key => $value) {
+            $this->set($key, $value, $ttl);
+        }
+
+        return true;
     }
 
     /**
-     * @return bool|void
+     * @param  array|mixed[] $keys
      */
-    public function clear()
-    {
-        $this->memory = [];
-    }
-
-    /**
-     * @param array<mixed> $keys
-     * @param null $default
-     * @return array<mixed>
-     */
-    public function getMultiple($keys, $default = null)
-    {
-        return $this->memory;
-    }
-
-    /**
-     * @param array<mixed> $values
-     * @param null $ttl
-     * @return bool|void
-     */
-    public function setMultiple($values, $ttl = null)
-    {
-        $this->memory = $values;
-    }
-
-    /**
-     * @param array<mixed> $keys
-     * @return bool|void
-     */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         foreach ($keys as $key) {
-            unset($this->memory[$key]);
+            $this->delete($key); // @phpstan-ignore-line
         }
+
+        return true;
     }
 
-    /**
-     * @param string $key
-     * @return bool|mixed
-     */
-    public function has($key)
+    public function has(mixed $key): bool
     {
-        return isset($this->memory[$key]);
+        return isset($this->cache[$key]);
     }
 }

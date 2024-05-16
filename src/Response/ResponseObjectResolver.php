@@ -12,7 +12,7 @@ use DigitalCz\GoSms\ValueObject\RepliesMessage;
 use DigitalCz\GoSms\ValueObject\SentMessage;
 use Psr\Http\Message\ResponseInterface;
 
-class ResponseObjectResolver implements ResponseResolverInterface
+class ResponseObjectResolver
 {
     public function resolveAccessToken(ResponseInterface $response): AccessToken
     {
@@ -58,10 +58,10 @@ class ResponseObjectResolver implements ResponseResolverInterface
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException(
-                sprintf('"%s" when parsing response body: "%s"', json_last_error_msg(), $httpResponse->getBody())
+                sprintf('"%s" when parsing response body: "%s"', json_last_error_msg(), $httpResponse->getBody()),
             );
         }
 
-        return $body;
+        return is_array($body) ? $body : [];
     }
 }

@@ -21,15 +21,9 @@ class RequestFactory
     public const API_DELETE_MESSAGE = 'https://app.gosms.cz/api/v1/messages/%s';
     public const API_REPLIES_MESSAGE = 'https://app.gosms.cz/api/v1/messages/%s/replies';
 
-    /**
-     * @var RequestFactoryInterface
-     */
-    private $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $streamFactory;
+    private StreamFactoryInterface $streamFactory;
 
     public function __construct(RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory)
     {
@@ -42,7 +36,7 @@ class RequestFactory
         $data = [
             'client_id' => $credentials->getClientId(),
             'client_secret' => $credentials->getClientSecret(),
-            'grant_type' => 'client_credentials'
+            'grant_type' => 'client_credentials',
         ];
 
         return $this->requestFactory->createRequest('POST', self::API_TOKEN)

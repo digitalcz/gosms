@@ -8,25 +8,16 @@ use DateTimeImmutable;
 
 class SendMessage
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
     /**
      * @var array<mixed>
      */
-    private $recipients = [];
+    private array $recipients = [];
 
-    /**
-     * @var int
-     */
-    private $channel;
+    private int $channel;
 
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $expectedSendStart;
+    private ?DateTimeImmutable $expectedSendStart = null;
 
     /**
      * @param array<mixed> $recipients

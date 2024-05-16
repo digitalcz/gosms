@@ -26,7 +26,7 @@ class AccessTokenTest extends TestCase
                 'expires_in' => 3600,
                 'token_type' => 'bearer',
                 'scope' => 'user',
-            ]
+            ],
         );
 
         self::assertSame('AccessTokenIU78JO', $accessToken->getAccessToken());

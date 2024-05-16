@@ -9,15 +9,9 @@ use DigitalCz\GoSms\ValueObject\SentMessage\Recipients;
 
 class SentMessage
 {
-    /**
-     * @var Recipients
-     */
-    private $recipients;
+    private Recipients $recipients;
 
-    /**
-     * @var string
-     */
-    private $link;
+    private string $link;
 
     public function __construct(Recipients $recipients, string $link)
     {
@@ -31,8 +25,8 @@ class SentMessage
     public static function fromArray(array $data): SentMessage
     {
         return new self(
-            Recipients::fromArray($data['recipients']),
-            $data['link']
+            Recipients::fromArray($data['recipients']), // @phpstan-ignore-line
+            $data['link'], // @phpstan-ignore-line
         );
     }
 

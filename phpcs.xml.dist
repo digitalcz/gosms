@@ -5,19 +5,10 @@
     <file>src</file>
     <file>tests</file>
 
-    <arg name="colors" />
-    <arg value="s" />
+    <arg name="colors"/>
+    <arg name="parallel" value="16"/>
+    <arg value="s"/>
+    <arg name="cache" value=".phpcs.cache"/>
 
-    <rule ref="PSR12" />
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
-        <properties>
-            <property name="searchAnnotations" value="true"/>
-        </properties>
-    </rule>
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-        <properties>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
-            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
-        </properties>
-    </rule>
+    <rule ref="./vendor/digitalcz/coding-standard/ruleset.xml"/>
 </ruleset>

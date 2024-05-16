@@ -16,14 +16,14 @@ class DetailMessageTest extends TestCase
         $recipients = new DetailMessage\Recipients(
             [
                 "+420111222333",
-                "+420111222444"
+                "+420111222444",
             ],
             [
-                "+420111222555"
+                "+420111222555",
             ],
             [
-                "+420111222666"
-            ]
+                "+420111222666",
+            ],
         );
 
         $stats = new DetailMessage\Stats(
@@ -39,15 +39,15 @@ class DetailMessageTest extends TestCase
                 0,
                 0,
                 0,
-                0
-            )
+                0,
+            ),
         );
 
         $sendingInfo = new DetailMessage\SendingInfo(
             "IN_PROGRESS|FAILED|SENT",
             new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
             new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
-            new DateTimeImmutable("2014-12-24T21:23:01+02:00")
+            new DateTimeImmutable("2014-12-24T21:23:01+02:00"),
         );
 
         $delivery = new DetailMessage\Delivery(
@@ -56,35 +56,25 @@ class DetailMessageTest extends TestCase
             1,
             [
                 "delivered" => [
-                    "+420111222333" => "2014-12-24T21:23:00+02:00"
+                    "+420111222333" => "2014-12-24T21:23:00+02:00",
                 ],
                 "undelivered" => [
-                    "+420111222444" => "2014-12-24T21:24:00+02:00"
+                    "+420111222444" => "2014-12-24T21:24:00+02:00",
                 ],
                 "delivering" => [
                     "+420111222555" => [
                         "deliveredCount" => 0,
                         "undeliveredCount" => 0,
-                        "deliveringCount" => 1
-                    ]
-                ]
-            ]
+                        "deliveringCount" => 1,
+                    ],
+                ],
+            ],
         );
 
         $reply = new DetailMessage\Reply(true, 0);
         $links = new DetailMessage\Links("api/v1/messages/1", "api/v1/messages/1/replies");
 
-        $object = new DetailMessage(
-            "SMS",
-            $message,
-            $recipients,
-            1,
-            $stats,
-            $sendingInfo,
-            $delivery,
-            $reply,
-            $links
-        );
+        $object = new DetailMessage("SMS", $message, $recipients, 1, $stats, $sendingInfo, $delivery, $reply, $links);
 
         self::assertSame('SMS', $object->getMessageType());
         self::assertSame($message, $object->getMessage());
@@ -97,21 +87,21 @@ class DetailMessageTest extends TestCase
         self::assertSame($links, $object->getLinks());
     }
 
-    public function testToArray(): void
+    public function testToArray(): void  // phpcs:ignore
     {
         $message = new DetailMessage\Message("Hello World!", ["Hello World!"]);
 
         $recipients = new DetailMessage\Recipients(
             [
                 "+420111222333",
-                "+420111222444"
+                "+420111222444",
             ],
             [
-                "+420111222555"
+                "+420111222555",
             ],
             [
-                "+420111222666"
-            ]
+                "+420111222666",
+            ],
         );
 
         $stats = new DetailMessage\Stats(
@@ -127,15 +117,15 @@ class DetailMessageTest extends TestCase
                 0,
                 0,
                 0,
-                0
-            )
+                0,
+            ),
         );
 
         $sendingInfo = new DetailMessage\SendingInfo(
             "IN_PROGRESS|FAILED|SENT",
             new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
             new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
-            new DateTimeImmutable("2014-12-24T21:23:01+02:00")
+            new DateTimeImmutable("2014-12-24T21:23:01+02:00"),
         );
 
         $delivery = new DetailMessage\Delivery(
@@ -144,35 +134,25 @@ class DetailMessageTest extends TestCase
             1,
             [
                 "delivered" => [
-                    "+420111222333" => "2014-12-24T21:23:00+02:00"
+                    "+420111222333" => "2014-12-24T21:23:00+02:00",
                 ],
                 "undelivered" => [
-                    "+420111222444" => "2014-12-24T21:24:00+02:00"
+                    "+420111222444" => "2014-12-24T21:24:00+02:00",
                 ],
                 "delivering" => [
                     "+420111222555" => [
                         "deliveredCount" => 0,
                         "undeliveredCount" => 0,
-                        "deliveringCount" => 1
-                    ]
-                ]
-            ]
+                        "deliveringCount" => 1,
+                    ],
+                ],
+            ],
         );
 
         $reply = new DetailMessage\Reply(true, 0);
         $links = new DetailMessage\Links("api/v1/messages/1", "api/v1/messages/1/replies");
 
-        $object = new DetailMessage(
-            "SMS",
-            $message,
-            $recipients,
-            1,
-            $stats,
-            $sendingInfo,
-            $delivery,
-            $reply,
-            $links
-        );
+        $object = new DetailMessage("SMS", $message, $recipients, 1, $stats, $sendingInfo, $delivery, $reply, $links);
 
         self::assertSame(
             [
@@ -184,13 +164,13 @@ class DetailMessageTest extends TestCase
                 'recipients' => [
                     'sent' => [
                         "+420111222333",
-                        "+420111222444"
+                        "+420111222444",
                     ],
                     'notSent' => [
-                        "+420111222555"
+                        "+420111222555",
                     ],
                     'invalid' => [
-                        "+420111222666"
+                        "+420111222666",
                     ],
                 ],
                 'channel' => 1,
@@ -208,7 +188,7 @@ class DetailMessageTest extends TestCase
                         'hu' => 0,
                         'ro' => 0,
                         'other' => 0,
-                    ]
+                    ],
                 ],
                 'sendingInfo' => [
                     'status' => "IN_PROGRESS|FAILED|SENT",
@@ -222,19 +202,19 @@ class DetailMessageTest extends TestCase
                     'deliveredSmsCount' => 1,
                     'recipients' => [
                         "delivered" => [
-                            "+420111222333" => "2014-12-24T21:23:00+02:00"
+                            "+420111222333" => "2014-12-24T21:23:00+02:00",
                         ],
                         "undelivered" => [
-                            "+420111222444" => "2014-12-24T21:24:00+02:00"
+                            "+420111222444" => "2014-12-24T21:24:00+02:00",
                         ],
                         "delivering" => [
                             "+420111222555" => [
                                 "deliveredCount" => 0,
                                 "undeliveredCount" => 0,
-                                "deliveringCount" => 1
-                            ]
-                        ]
-                    ]
+                                "deliveringCount" => 1,
+                            ],
+                        ],
+                    ],
                 ],
                 'reply' => [
                     'hasReplies' => true,
@@ -242,14 +222,14 @@ class DetailMessageTest extends TestCase
                 ],
                 'links' => [
                     'self' => 'api/v1/messages/1',
-                    'replies' => 'api/v1/messages/1/replies'
-                ]
+                    'replies' => 'api/v1/messages/1/replies',
+                ],
             ],
-            $object->toArray()
+            $object->toArray(),
         );
     }
 
-    public function testFromArray(): void
+    public function testFromArray(): void  // phpcs:ignore
     {
         $detailOrganization = DetailMessage::fromArray(
             [
@@ -261,13 +241,13 @@ class DetailMessageTest extends TestCase
                 'recipients' => [
                     'sent' => [
                         "+420111222333",
-                        "+420111222444"
+                        "+420111222444",
                     ],
                     'notSent' => [
-                        "+420111222555"
+                        "+420111222555",
                     ],
                     'invalid' => [
-                        "+420111222666"
+                        "+420111222666",
                     ],
                 ],
                 'channel' => 1,
@@ -285,7 +265,7 @@ class DetailMessageTest extends TestCase
                         'hu' => 0,
                         'ro' => 0,
                         'other' => 0,
-                    ]
+                    ],
                 ],
                 'sendingInfo' => [
                     'status' => "IN_PROGRESS|FAILED|SENT",
@@ -299,19 +279,19 @@ class DetailMessageTest extends TestCase
                     'deliveredSmsCount' => 1,
                     'recipients' => [
                         "delivered" => [
-                            "+420111222333" => "2014-12-24T21:23:00+02:00"
+                            "+420111222333" => "2014-12-24T21:23:00+02:00",
                         ],
                         "undelivered" => [
-                            "+420111222444" => "2014-12-24T21:24:00+02:00"
+                            "+420111222444" => "2014-12-24T21:24:00+02:00",
                         ],
                         "delivering" => [
                             "+420111222555" => [
                                 "deliveredCount" => 0,
                                 "undeliveredCount" => 0,
-                                "deliveringCount" => 1
-                            ]
-                        ]
-                    ]
+                                "deliveringCount" => 1,
+                            ],
+                        ],
+                    ],
                 ],
                 'reply' => [
                     'hasReplies' => true,
@@ -319,9 +299,9 @@ class DetailMessageTest extends TestCase
                 ],
                 'links' => [
                     'self' => 'api/v1/messages/1',
-                    'replies' => 'api/v1/messages/1/replies'
-                ]
-            ]
+                    'replies' => 'api/v1/messages/1/replies',
+                ],
+            ],
         );
 
         self::assertSame(
@@ -334,13 +314,13 @@ class DetailMessageTest extends TestCase
                 'recipients' => [
                     'sent' => [
                         "+420111222333",
-                        "+420111222444"
+                        "+420111222444",
                     ],
                     'notSent' => [
-                        "+420111222555"
+                        "+420111222555",
                     ],
                     'invalid' => [
-                        "+420111222666"
+                        "+420111222666",
                     ],
                 ],
                 'channel' => 1,
@@ -358,7 +338,7 @@ class DetailMessageTest extends TestCase
                         'hu' => 0,
                         'ro' => 0,
                         'other' => 0,
-                    ]
+                    ],
                 ],
                 'sendingInfo' => [
                     'status' => "IN_PROGRESS|FAILED|SENT",
@@ -372,19 +352,19 @@ class DetailMessageTest extends TestCase
                     'deliveredSmsCount' => 1,
                     'recipients' => [
                         "delivered" => [
-                            "+420111222333" => "2014-12-24T21:23:00+02:00"
+                            "+420111222333" => "2014-12-24T21:23:00+02:00",
                         ],
                         "undelivered" => [
-                            "+420111222444" => "2014-12-24T21:24:00+02:00"
+                            "+420111222444" => "2014-12-24T21:24:00+02:00",
                         ],
                         "delivering" => [
                             "+420111222555" => [
                                 "deliveredCount" => 0,
                                 "undeliveredCount" => 0,
-                                "deliveringCount" => 1
-                            ]
-                        ]
-                    ]
+                                "deliveringCount" => 1,
+                            ],
+                        ],
+                    ],
                 ],
                 'reply' => [
                     'hasReplies' => true,
@@ -392,10 +372,10 @@ class DetailMessageTest extends TestCase
                 ],
                 'links' => [
                     'self' => 'api/v1/messages/1',
-                    'replies' => 'api/v1/messages/1/replies'
-                ]
+                    'replies' => 'api/v1/messages/1/replies',
+                ],
             ],
-            $detailOrganization->toArray()
+            $detailOrganization->toArray(),
         );
     }
 }

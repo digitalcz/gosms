@@ -6,15 +6,12 @@ namespace DigitalCz\GoSms\ValueObject\DetailMessage;
 
 class Message
 {
-    /**
-     * @var string
-     */
-    private $fulltext;
+    private string $fulltext;
 
     /**
      * @var array<string>
      */
-    private $parts = [];
+    private array $parts = [];
 
     /**
      * @param array<string> $parts
@@ -30,10 +27,7 @@ class Message
      */
     public static function fromArray(array $data): Message
     {
-        return new self(
-            $data['fulltext'],
-            $data['parts']
-        );
+        return new self($data['fulltext'], $data['parts']); // @phpstan-ignore-line
     }
 
     /**

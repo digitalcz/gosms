@@ -28,7 +28,7 @@ class SendMessageTest extends TestCase
                 'recipients' => ['+420775300500'],
                 'channel' => 1,
             ],
-            $sendMessage->toArray()
+            $sendMessage->toArray(),
         );
 
         $time = new DateTimeImmutable('3600');
@@ -43,7 +43,7 @@ class SendMessageTest extends TestCase
                 'channel' => 1,
                 'expectedSendStart' => $time->format('c'),
             ],
-            $sendMessage->toArray()
+            $sendMessage->toArray(),
         );
     }
 

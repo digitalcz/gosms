@@ -9,17 +9,17 @@ class Recipients
     /**
      * @var array<string>
      */
-    private $sent = [];
+    private array $sent = [];
 
     /**
      * @var array<string>
      */
-    private $notSent = [];
+    private array $notSent = [];
 
     /**
      * @var array<string>
      */
-    private $invalid = [];
+    private array $invalid = [];
 
     /**
      * @param array<string> $sent
@@ -38,11 +38,7 @@ class Recipients
      */
     public static function fromArray(array $data): Recipients
     {
-        return new self(
-            $data['sent'],
-            $data['notSent'],
-            $data['invalid']
-        );
+        return new self($data['sent'], $data['notSent'], $data['invalid']); // @phpstan-ignore-line
     }
 
     /**

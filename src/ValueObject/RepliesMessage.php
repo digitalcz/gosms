@@ -9,15 +9,9 @@ use DigitalCz\GoSms\ValueObject\RepliesMessage\Reply;
 
 class RepliesMessage
 {
-    /**
-     * @var Reply
-     */
-    private $reply;
+    private Reply $reply;
 
-    /**
-     * @var Links
-     */
-    private $links;
+    private Links $links;
 
     public function __construct(Reply $reply, Links $links)
     {
@@ -31,8 +25,8 @@ class RepliesMessage
     public static function fromArray(array $data): RepliesMessage
     {
         return new self(
-            Reply::fromArray($data['reply']),
-            Links::fromArray($data['links'])
+            Reply::fromArray($data['reply']), // @phpstan-ignore-line
+            Links::fromArray($data['links']), // @phpstan-ignore-line
         );
     }
 
