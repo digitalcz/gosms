@@ -7,7 +7,7 @@ namespace DigitalCz\GoSms\Http;
 use DigitalCz\GoSms\Auth\AccessTokenProviderInterface;
 use DigitalCz\GoSms\Exception\ClientNotSuccessException;
 use DigitalCz\GoSms\Request\RequestFactory;
-use DigitalCz\GoSms\Response\ResponseResolverInterface;
+use DigitalCz\GoSms\Response\ResponseObjectResolver;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -15,37 +15,22 @@ use Psr\Http\Message\ResponseInterface;
 
 final class Client
 {
-    /**
-     * @var ClientCredentials
-     */
-    protected $clientCredentials;
+    protected ClientCredentials $clientCredentials;
 
-    /**
-     * @var ClientInterface
-     */
-    protected $httpClient;
+    protected ClientInterface $httpClient;
 
-    /**
-     * @var AccessTokenProviderInterface
-     */
-    protected $tokenProvider;
+    protected AccessTokenProviderInterface $tokenProvider;
 
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
+    protected RequestFactory $requestFactory;
 
-    /**
-     * @var ResponseResolverInterface
-     */
-    protected $responseObjectFactory;
+    protected ResponseObjectResolver $responseObjectFactory;
 
     public function __construct(
         ClientCredentials $clientCredentials,
         ClientInterface $httpClient,
         AccessTokenProviderInterface $tokenProvider,
         RequestFactory $requestFactory,
-        ResponseResolverInterface $responseObjectFactory
+        ResponseObjectResolver $responseObjectFactory,
     ) {
         $this->clientCredentials = $clientCredentials;
         $this->httpClient = $httpClient;
@@ -83,7 +68,7 @@ final class Client
 
     protected function checkResponse(ResponseInterface $response): void
     {
-        if (!in_array($response->getStatusCode(), [200, 201])) {
+        if (!in_array($response->getStatusCode(), [200, 201], true)) {
             throw new ClientNotSuccessException((string)$response->getBody(), $response->getStatusCode());
         }
     }

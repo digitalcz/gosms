@@ -6,40 +6,19 @@ namespace DigitalCz\GoSms\ValueObject\DetailMessage;
 
 class NumberTypes
 {
-    /**
-     * @var int
-     */
-    private $czMobile = 0;
+    private int $czMobile = 0;
 
-    /**
-     * @var int
-     */
-    private $czOther = 0;
+    private int $czOther = 0;
 
-    /**
-     * @var int
-     */
-    private $sk = 0;
+    private int $sk = 0;
 
-    /**
-     * @var int
-     */
-    private $pl = 0;
+    private int $pl = 0;
 
-    /**
-     * @var int
-     */
-    private $hu = 0;
+    private int $hu = 0;
 
-    /**
-     * @var int
-     */
-    private $ro = 0;
+    private int $ro = 0;
 
-    /**
-     * @var int
-     */
-    private $other = 0;
+    private int $other = 0;
 
     public function __construct(int $czMobile, int $czOther, int $sk, int $pl, int $hu, int $ro, int $other)
     {
@@ -58,13 +37,13 @@ class NumberTypes
     public static function fromArray(array $data): NumberTypes
     {
         return new self(
-            $data['czMobile'],
-            $data['czOther'],
-            $data['sk'],
-            $data['pl'],
-            $data['hu'],
-            $data['ro'],
-            $data['other']
+            $data['czMobile'], // @phpstan-ignore-line
+            $data['czOther'], // @phpstan-ignore-line
+            $data['sk'], // @phpstan-ignore-line
+            $data['pl'], // @phpstan-ignore-line
+            $data['hu'], // @phpstan-ignore-line
+            $data['ro'], // @phpstan-ignore-line
+            $data['other'], // @phpstan-ignore-line
         );
     }
 

@@ -23,7 +23,7 @@ class SentMessageTest extends TestCase
     public function testFromArray(): void
     {
         $sentMessage = SentMessage::fromArray(
-            ['recipients' => ['invalid' => ['Peter']], 'link' => 'api/v1/messages/1']
+            ['recipients' => ['invalid' => ['Peter']], 'link' => 'api/v1/messages/1'],
         );
 
         self::assertSame('api/v1/messages/1', $sentMessage->getLink());
@@ -35,9 +35,9 @@ class SentMessageTest extends TestCase
     {
         $array =  [
             'recipients' => [
-                'invalid' => ['Peter']
+                'invalid' => ['Peter'],
             ],
-            'link' => 'api/v1/messages/1'
+            'link' => 'api/v1/messages/1',
         ];
 
         $sentMessage = SentMessage::fromArray($array);

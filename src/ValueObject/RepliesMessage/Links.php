@@ -6,15 +6,9 @@ namespace DigitalCz\GoSms\ValueObject\RepliesMessage;
 
 class Links
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $replies;
+    private string $replies;
 
     public function __construct(string $message, string $replies)
     {
@@ -27,10 +21,7 @@ class Links
      */
     public static function fromArray(array $data): Links
     {
-        return new self(
-            $data['message'],
-            $data['replies']
-        );
+        return new self($data['message'], $data['replies']); // @phpstan-ignore-line
     }
 
     /**

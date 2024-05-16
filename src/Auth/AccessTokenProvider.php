@@ -10,10 +10,7 @@ use Psr\SimpleCache\CacheInterface;
 
 class AccessTokenProvider implements AccessTokenProviderInterface
 {
-    /**
-     * @var CacheInterface
-     */
-    protected $cache;
+    protected CacheInterface $cache;
 
     public function __construct(CacheInterface $cache)
     {
@@ -24,7 +21,7 @@ class AccessTokenProvider implements AccessTokenProviderInterface
     {
         $accessToken = $this->cache->get($credentials->getClientId());
 
-        if ($accessToken === null) {
+        if (!is_array($accessToken)) {
             return null;
         }
 

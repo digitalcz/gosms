@@ -12,6 +12,7 @@ use DigitalCz\GoSms\ValueObject\DetailMessage;
 use DigitalCz\GoSms\ValueObject\DetailOrganization;
 use DigitalCz\GoSms\ValueObject\RepliesMessage;
 use DigitalCz\GoSms\ValueObject\SentMessage;
+use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,7 +20,9 @@ class ResponseObjectResolverTest extends TestCase
 {
     public function testResolveAccessToken(): void
     {
-        $dummyData = file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json');
+        $dummyData = Stream::create(
+            file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json'), // @phpstan-ignore-line
+        );
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn($dummyData);
@@ -33,7 +36,9 @@ class ResponseObjectResolverTest extends TestCase
 
     public function testResolveDetailOrganization(): void
     {
-        $dummyData = file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json');
+        $dummyData = Stream::create(
+            file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'), // @phpstan-ignore-line
+        );
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn($dummyData);
@@ -48,7 +53,9 @@ class ResponseObjectResolverTest extends TestCase
 
     public function testResolveSendMessage(): void
     {
-        $dummyData = file_get_contents(__DIR__ . '/../Dummy/Responses/sent_message.json');
+        $dummyData = Stream::create(
+            file_get_contents(__DIR__ . '/../Dummy/Responses/sent_message.json'), // @phpstan-ignore-line
+        );
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn($dummyData);
@@ -63,7 +70,9 @@ class ResponseObjectResolverTest extends TestCase
 
     public function testResolveDetailMessage(): void
     {
-        $dummyData = file_get_contents(__DIR__ . '/../Dummy/Responses/detail_message.json');
+        $dummyData = Stream::create(
+            file_get_contents(__DIR__ . '/../Dummy/Responses/detail_message.json'), // @phpstan-ignore-line
+        );
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn($dummyData);
@@ -74,14 +83,14 @@ class ResponseObjectResolverTest extends TestCase
             new DetailMessage\Recipients(
                 [
                     "+420111222333",
-                    "+420111222444"
+                    "+420111222444",
                 ],
                 [
-                    "+420111222555"
+                    "+420111222555",
                 ],
                 [
-                    "+420111222666"
-                ]
+                    "+420111222666",
+                ],
             ),
             1,
             new DetailMessage\Stats(
@@ -97,14 +106,14 @@ class ResponseObjectResolverTest extends TestCase
                     0,
                     0,
                     0,
-                    0
-                )
+                    0,
+                ),
             ),
             new DetailMessage\SendingInfo(
                 "IN_PROGRESS|FAILED|SENT",
                 new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
                 new DateTimeImmutable("2014-12-24T21:23:00+02:00"),
-                new DateTimeImmutable("2014-12-24T21:23:01+02:00")
+                new DateTimeImmutable("2014-12-24T21:23:01+02:00"),
             ),
             new DetailMessage\Delivery(
                 false,
@@ -112,22 +121,22 @@ class ResponseObjectResolverTest extends TestCase
                 1,
                 [
                     "delivered" => [
-                        "+420111222333" => "2014-12-24T21:23:00+02:00"
+                        "+420111222333" => "2014-12-24T21:23:00+02:00",
                     ],
                     "undelivered" => [
-                        "+420111222444" => "2014-12-24T21:24:00+02:00"
+                        "+420111222444" => "2014-12-24T21:24:00+02:00",
                     ],
                     "delivering" => [
                         "+420111222555" => [
                             "deliveredCount" => 0,
                             "undeliveredCount" => 0,
-                            "deliveringCount" => 1
-                        ]
-                    ]
-                ]
+                            "deliveringCount" => 1,
+                        ],
+                    ],
+                ],
             ),
             new DetailMessage\Reply(true, 0),
-            new DetailMessage\Links("api/v1/messages/1", "api/v1/messages/1/replies")
+            new DetailMessage\Links("api/v1/messages/1", "api/v1/messages/1/replies"),
         );
 
         $responseResolver = new ResponseObjectResolver();
@@ -137,7 +146,9 @@ class ResponseObjectResolverTest extends TestCase
 
     public function testResolveRepliesMessage(): void
     {
-        $dummyData = file_get_contents(__DIR__ . '/../Dummy/Responses/replies_message.json');
+        $dummyData = Stream::create(
+            file_get_contents(__DIR__ . '/../Dummy/Responses/replies_message.json'), // @phpstan-ignore-line
+        );
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn($dummyData);
 
@@ -150,15 +161,12 @@ class ResponseObjectResolverTest extends TestCase
                         "id" => 1,
                         "message" => "odpoved",
                         "sourceNumber" => "+420799507467",
-                        "received" => "2016-05-04T21:23:00+02:00"
-                    ]
-                ]
-            ]
+                        "received" => "2016-05-04T21:23:00+02:00",
+                    ],
+                ],
+            ],
         );
-        $links = new RepliesMessage\Links(
-            "api/v1/messages/1",
-            "api/v1/messages/1/replies"
-        );
+        $links = new RepliesMessage\Links("api/v1/messages/1", "api/v1/messages/1/replies");
         $object = new RepliesMessage($reply, $links);
 
         $responseResolver = new ResponseObjectResolver();
@@ -169,7 +177,7 @@ class ResponseObjectResolverTest extends TestCase
     public function testFailedParseBody(): void
     {
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn('bad request');
+        $response->method('getBody')->willReturn(Stream::create('bad request'));
 
         $responseResolver = new ResponseObjectResolver();
 

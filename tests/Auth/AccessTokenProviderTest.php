@@ -7,7 +7,7 @@ namespace DigitalCz\GoSms\Auth;
 use DigitalCz\GoSms\Dummy\Auth\InMemoryCache;
 use DigitalCz\GoSms\ValueObject\AccessToken;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class AccessTokenProviderTest extends TestCase
 {
@@ -29,7 +29,7 @@ class AccessTokenProviderTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json');
         $data = json_decode($contents !== false ? $contents : '', true);
-        $token = AccessToken::fromArray($data);
+        $token = AccessToken::fromArray($data); // @phpstan-ignore-line
 
         $cache->set('clientId', $data);
 
@@ -45,7 +45,7 @@ class AccessTokenProviderTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json');
         $data = json_decode($contents !== false ? $contents : '', true);
-        $token = AccessToken::fromArray($data);
+        $token = AccessToken::fromArray($data); // @phpstan-ignore-line
 
         $provider->setAccessToken($credentials, $token);
 

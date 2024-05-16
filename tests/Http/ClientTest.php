@@ -12,6 +12,7 @@ use DigitalCz\GoSms\Response\ResponseObjectResolver;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Mock\Client as HttpClient;
+use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
@@ -28,11 +29,19 @@ class ClientTest extends TestCase
         $httpResponse
             ->expects(self::at(0))
             ->method('getBody')
-            ->willReturn(file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json'));
+            ->willReturn(
+                Stream::create(
+                    file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json'), // @phpstan-ignore-line
+                ),
+            );
         $httpResponse
             ->expects(self::at(1))
             ->method('getBody')
-            ->willReturn(file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'));
+            ->willReturn(
+                Stream::create(
+                    file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'), // @phpstan-ignore-line
+                ),
+            );
         $httpClient->addResponse($httpResponse);
 
         $cache = new InMemoryCache();
@@ -40,18 +49,12 @@ class ClientTest extends TestCase
 
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $responseResolver = new ResponseObjectResolver();
 
-        $client = new Client(
-            $credentials,
-            $httpClient,
-            $accessTokenProvider,
-            $requestFactory,
-            $responseResolver
-        );
+        $client = new Client($credentials, $httpClient, $accessTokenProvider, $requestFactory, $responseResolver);
 
         $request = $requestFactory->requestDetailOrganization();
 
@@ -60,7 +63,7 @@ class ClientTest extends TestCase
         self::assertCount(2, $httpClient->getRequests());
         self::assertEquals(
             file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'),
-            (string)$httpResponse->getBody()
+            (string)$httpResponse->getBody(),
         );
         self::assertEquals('Bearer AccessTokenIU78JO', $httpClient->getLastRequest()->getHeaderLine('Authorization'));
     }
@@ -76,11 +79,19 @@ class ClientTest extends TestCase
         $httpResponse
             ->expects(self::at(0))
             ->method('getBody')
-            ->willReturn(file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json'));
+            ->willReturn(
+                Stream::create(
+                    file_get_contents(__DIR__ . '/../Dummy/Responses/access_token.json'), // @phpstan-ignore-line
+                ),
+            );
         $httpResponse
             ->expects(self::at(1))
             ->method('getBody')
-            ->willReturn(file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'));
+            ->willReturn(
+                Stream::create(
+                    file_get_contents(__DIR__ . '/../Dummy/Responses/detail_organization.json'), // @phpstan-ignore-line
+                ),
+            );
         $httpClient->addResponse($httpResponse);
 
         $cache = new InMemoryCache();
@@ -93,18 +104,12 @@ class ClientTest extends TestCase
 
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $responseResolver = new ResponseObjectResolver();
 
-        $client = new Client(
-            $credentials,
-            $httpClient,
-            $accessTokenProvider,
-            $requestFactory,
-            $responseResolver
-        );
+        $client = new Client($credentials, $httpClient, $accessTokenProvider, $requestFactory, $responseResolver);
 
         $request = $requestFactory->requestDetailOrganization();
 

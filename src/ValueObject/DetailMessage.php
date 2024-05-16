@@ -14,50 +14,23 @@ use DigitalCz\GoSms\ValueObject\DetailMessage\Stats;
 
 class DetailMessage
 {
-    /**
-     * @var string
-     */
-    private $messageType;
+    private string $messageType;
 
-    /**
-     * @var Message
-     */
-    private $message;
+    private Message $message;
 
-    /**
-     * @var Recipients
-     */
-    private $recipients;
+    private Recipients $recipients;
 
-    /**
-     * @var int
-     */
-    private $channel;
+    private int $channel;
 
-    /**
-     * @var Stats
-     */
-    private $stats;
+    private Stats $stats;
 
-    /**
-     * @var SendingInfo
-     */
-    private $sendingInfo;
+    private SendingInfo $sendingInfo;
 
-    /**
-     * @var Delivery
-     */
-    private $delivery;
+    private Delivery $delivery;
 
-    /**
-     * @var Reply
-     */
-    private $reply;
+    private Reply $reply;
 
-    /**
-     * @var Links
-     */
-    private $links;
+    private Links $links;
 
     public function __construct(
         string $messageType,
@@ -68,7 +41,7 @@ class DetailMessage
         SendingInfo $sendingInfo,
         Delivery $delivery,
         Reply $reply,
-        Links $links
+        Links $links,
     ) {
         $this->messageType = $messageType;
         $this->message = $message;
@@ -87,15 +60,15 @@ class DetailMessage
     public static function fromArray(array $data): DetailMessage
     {
         return new self(
-            $data['messageType'],
-            Message::fromArray($data['message']),
-            Recipients::fromArray($data['recipients']),
-            $data['channel'],
-            Stats::fromArray($data['stats']),
-            SendingInfo::fromArray($data['sendingInfo']),
-            Delivery::fromArray($data['delivery']),
-            Reply::fromArray($data['reply']),
-            Links::fromArray($data['links'])
+            $data['messageType'], // @phpstan-ignore-line
+            Message::fromArray($data['message']), // @phpstan-ignore-line
+            Recipients::fromArray($data['recipients']), // @phpstan-ignore-line
+            $data['channel'], // @phpstan-ignore-line
+            Stats::fromArray($data['stats']), // @phpstan-ignore-line
+            SendingInfo::fromArray($data['sendingInfo']), // @phpstan-ignore-line
+            Delivery::fromArray($data['delivery']), // @phpstan-ignore-line
+            Reply::fromArray($data['reply']), // @phpstan-ignore-line
+            Links::fromArray($data['links']), // @phpstan-ignore-line
         );
     }
 
@@ -116,7 +89,6 @@ class DetailMessage
             'links' => $this->getLinks()->toArray(),
         ];
     }
-
 
     public function getMessageType(): string
     {

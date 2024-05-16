@@ -6,25 +6,13 @@ namespace DigitalCz\GoSms\ValueObject;
 
 class AccessToken
 {
-    /**
-     * @var string
-     */
-    private $accessToken;
+    private string $accessToken;
 
-    /**
-     * @var int
-     */
-    private $expiresIn;
+    private int $expiresIn;
 
-    /**
-     * @var string
-     */
-    private $tokenType;
+    private string $tokenType;
 
-    /**
-     * @var string
-     */
-    private $scope;
+    private string $scope;
 
     public function __construct(string $accessToken, int $expiresIn, string $tokenType, string $scope)
     {
@@ -35,20 +23,20 @@ class AccessToken
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['access_token'],
-            $data['expires_in'],
-            $data['token_type'],
-            $data['scope']
+            $data['access_token'], // @phpstan-ignore-line
+            $data['expires_in'], // @phpstan-ignore-line
+            $data['token_type'], // @phpstan-ignore-line
+            $data['scope'], // @phpstan-ignore-line
         );
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {

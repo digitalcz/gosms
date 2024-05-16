@@ -8,7 +8,6 @@ use DigitalCz\GoSms\Auth\AccessTokenProviderInterface;
 use DigitalCz\GoSms\Http\Client;
 use DigitalCz\GoSms\Request\RequestFactory;
 use DigitalCz\GoSms\Response\ResponseObjectResolver;
-use DigitalCz\GoSms\Response\ResponseResolverInterface;
 use DigitalCz\GoSms\ValueObject\ClientCredentials;
 use DigitalCz\GoSms\ValueObject\DetailMessage;
 use DigitalCz\GoSms\ValueObject\DetailOrganization;
@@ -23,33 +22,24 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 final class GoSms
 {
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @var RequestFactory
-     */
-    private $requestFactory;
+    private RequestFactory $requestFactory;
 
-    /**
-     * @var ResponseResolverInterface
-     */
-    private $responseObjectFactory;
+    private ResponseObjectResolver $responseObjectFactory;
 
     public function __construct(
         string $clientId,
         string $clientSecret,
         AccessTokenProviderInterface $accessTokenProvider,
-        ClientInterface $httpClient = null,
-        RequestFactoryInterface $httpRequestFactory = null,
-        StreamFactoryInterface $httpStreamFactory = null,
-        ResponseResolverInterface $responseResolver = null
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $httpRequestFactory = null,
+        ?StreamFactoryInterface $httpStreamFactory = null,
+        ?ResponseObjectResolver $responseResolver = null,
     ) {
-        $httpClient = $httpClient ?? Psr18ClientDiscovery::find();
-        $httpRequestFactory = $httpRequestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
-        $httpStreamFactory = $httpStreamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
+        $httpClient ??= Psr18ClientDiscovery::find();
+        $httpRequestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
+        $httpStreamFactory ??= Psr17FactoryDiscovery::findStreamFactory();
 
         $this->requestFactory = new RequestFactory($httpRequestFactory, $httpStreamFactory);
         $this->responseObjectFactory = $responseResolver ?? new ResponseObjectResolver();
@@ -59,7 +49,7 @@ final class GoSms
             $httpClient,
             $accessTokenProvider,
             $this->requestFactory,
-            $this->responseObjectFactory
+            $this->responseObjectFactory,
         );
     }
 

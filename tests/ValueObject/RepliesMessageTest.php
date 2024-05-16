@@ -18,7 +18,7 @@ class RepliesMessageTest extends TestCase
                 "message" => "odpoved",
                 "sourceNumber" => "+420799507467",
                 "received" => "2016-05-04T21:23:00+02:00",
-            ]
+            ],
         ]);
         $links = new Links("api/v1/messages/1", "api/v1/messages/1/replies");
 
@@ -36,7 +36,7 @@ class RepliesMessageTest extends TestCase
                 "message" => "odpoved",
                 "sourceNumber" => "+420799507467",
                 "received" => "2016-05-04T21:23:00+02:00",
-            ]
+            ],
         ]);
         $links = new Links("api/v1/messages/1", "api/v1/messages/1/replies");
 
@@ -53,15 +53,15 @@ class RepliesMessageTest extends TestCase
                             "message" => "odpoved",
                             "sourceNumber" => "+420799507467",
                             "received" => "2016-05-04T21:23:00+02:00",
-                        ]
+                        ],
                     ],
                 ],
                 'links' => [
                     'message' => "api/v1/messages/1",
                     'replies' => "api/v1/messages/1/replies",
-                ]
+                ],
             ],
-            $sendMessage->toArray()
+            $sendMessage->toArray(),
         );
     }
 
@@ -78,14 +78,14 @@ class RepliesMessageTest extends TestCase
                             "message" => "odpoved",
                             "sourceNumber" => "+420799507467",
                             "received" => "2016-05-04T21:23:00+02:00",
-                        ]
+                        ],
                     ],
                 ],
                 'links' => [
                     'message' => "api/v1/messages/1",
                     'replies' => "api/v1/messages/1/replies",
-                ]
-            ]
+                ],
+            ],
         );
 
         self::assertSame(
@@ -99,15 +99,15 @@ class RepliesMessageTest extends TestCase
                             "message" => "odpoved",
                             "sourceNumber" => "+420799507467",
                             "received" => "2016-05-04T21:23:00+02:00",
-                        ]
+                        ],
                     ],
                 ],
                 'links' => [
                     'message' => "api/v1/messages/1",
                     'replies' => "api/v1/messages/1/replies",
-                ]
+                ],
             ],
-            $detailOrganization->toArray()
+            $detailOrganization->toArray(),
         );
     }
 }

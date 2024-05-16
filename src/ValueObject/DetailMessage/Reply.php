@@ -6,15 +6,9 @@ namespace DigitalCz\GoSms\ValueObject\DetailMessage;
 
 class Reply
 {
-    /**
-     * @var bool
-     */
-    private $hasReplies = false;
+    private bool $hasReplies = false;
 
-    /**
-     * @var int
-     */
-    private $repliesCount = 0;
+    private int $repliesCount = 0;
 
     public function __construct(bool $hasReplies, int $repliesCount)
     {
@@ -27,10 +21,7 @@ class Reply
      */
     public static function fromArray(array $data): Reply
     {
-        return new self(
-            $data['hasReplies'],
-            $data['repliesCount']
-        );
+        return new self($data['hasReplies'], $data['repliesCount']); // @phpstan-ignore-line
     }
 
     /**

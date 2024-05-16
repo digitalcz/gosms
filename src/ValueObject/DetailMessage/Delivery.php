@@ -6,25 +6,16 @@ namespace DigitalCz\GoSms\ValueObject\DetailMessage;
 
 class Delivery
 {
-    /**
-     * @var bool
-     */
-    private $isDelivered = false;
+    private bool $isDelivered = false;
 
-    /**
-     * @var int
-     */
-    private $smsCount = 0;
+    private int $smsCount = 0;
 
-    /**
-     * @var int
-     */
-    private $deliveredSmsCount = 0;
+    private int $deliveredSmsCount = 0;
 
     /**
      * @var array<mixed>
      */
-    private $recipients;
+    private array $recipients;
 
     /**
      * @param array<mixed> $recipients
@@ -43,10 +34,10 @@ class Delivery
     public static function fromArray(array $data): Delivery
     {
         return new self(
-            $data['isDelivered'],
-            $data['smsCount'],
-            $data['deliveredSmsCount'],
-            $data['recipients']
+            $data['isDelivered'], // @phpstan-ignore-line
+            $data['smsCount'], // @phpstan-ignore-line
+            $data['deliveredSmsCount'], // @phpstan-ignore-line
+            $data['recipients'], // @phpstan-ignore-line
         );
     }
 

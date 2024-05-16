@@ -27,7 +27,7 @@ class DetailOrganizationTest extends TestCase
                 'currentCredit' => 100.0,
                 'channels' => [['id' => 1, 'name' => 'Abc', 'sourceNumber' => '123']],
             ],
-            $detailOrganization->toArray()
+            $detailOrganization->toArray(),
         );
     }
 
@@ -37,7 +37,7 @@ class DetailOrganizationTest extends TestCase
             [
                 'currentCredit' => 100.0,
                 'channels' => [['id' => 1, 'name' => 'Abc', 'sourceNumber' => '123']],
-            ]
+            ],
         );
 
         self::assertSame(
@@ -45,7 +45,7 @@ class DetailOrganizationTest extends TestCase
                 'currentCredit' => 100.0,
                 'channels' => [['id' => 1, 'name' => 'Abc', 'sourceNumber' => '123']],
             ],
-            $detailOrganization->toArray()
+            $detailOrganization->toArray(),
         );
     }
 }

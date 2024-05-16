@@ -16,7 +16,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $credentials = new ClientCredentials('clientId', 'clientSecret');
@@ -26,7 +26,7 @@ class RequestFactoryTest extends TestCase
         $expectedBody = sprintf(
             'client_id=%s&client_secret=%s&grant_type=client_credentials',
             $credentials->getClientId(),
-            $credentials->getClientSecret()
+            $credentials->getClientSecret(),
         );
 
         self::assertEquals(RequestFactory::API_TOKEN, $request->getUri());
@@ -39,7 +39,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $request = $requestFactory->requestDetailOrganization();
@@ -52,7 +52,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $message = new SendMessage('Hans, We need contribution!', ['+420775300500'], 1);
@@ -77,7 +77,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $request = $requestFactory->requestDetailMessage(123);
@@ -90,7 +90,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $request = $requestFactory->requestDeleteMessage(123);
@@ -103,7 +103,7 @@ class RequestFactoryTest extends TestCase
     {
         $requestFactory = new RequestFactory(
             Psr17FactoryDiscovery::findRequestFactory(),
-            Psr17FactoryDiscovery::findStreamFactory()
+            Psr17FactoryDiscovery::findStreamFactory(),
         );
 
         $request = $requestFactory->requestRepliesMessage(123);

@@ -6,15 +6,12 @@ namespace DigitalCz\GoSms\ValueObject;
 
 class DetailOrganization
 {
-    /**
-     * @var float
-     */
-    private $currentCredit = 0.0;
+    private float $currentCredit = 0.0;
 
     /**
      * @var array<Channel>
      */
-    private $channels = [];
+    private array $channels = [];
 
     /**
      * @param array<Channel> $channels
@@ -32,14 +29,11 @@ class DetailOrganization
     {
         $channels = [];
 
-        foreach ($data['channels'] as $channel) {
-            $channels[] = Channel::fromArray($channel);
+        foreach ($data['channels'] as $channel) { // @phpstan-ignore-line
+            $channels[] = Channel::fromArray($channel); // @phpstan-ignore-line
         }
 
-        return new self(
-            $data['currentCredit'],
-            $channels
-        );
+        return new self($data['currentCredit'], $channels);
     }
 
     /**

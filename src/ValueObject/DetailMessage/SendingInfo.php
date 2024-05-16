@@ -8,31 +8,19 @@ use DateTimeImmutable;
 
 class SendingInfo
 {
-    /**
-     * @var string
-     */
-    private $status;
+    private string $status;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $expectedSendStart;
+    private DateTimeImmutable $expectedSendStart;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $sentStart;
+    private DateTimeImmutable $sentStart;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $sentFinish;
+    private DateTimeImmutable $sentFinish;
 
     public function __construct(
         string $status,
         DateTimeImmutable $expectedSendStart,
         DateTimeImmutable $sentStart,
-        DateTimeImmutable $sentFinish
+        DateTimeImmutable $sentFinish,
     ) {
         $this->status = $status;
         $this->expectedSendStart = $expectedSendStart;
@@ -46,10 +34,10 @@ class SendingInfo
     public static function fromArray(array $data): SendingInfo
     {
         return new self(
-            $data['status'],
-            new DateTimeImmutable($data['expectedSendStart']),
-            new DateTimeImmutable($data['sentStart']),
-            new DateTimeImmutable($data['sentFinish'])
+            $data['status'], // @phpstan-ignore-line
+            new DateTimeImmutable($data['expectedSendStart']), // @phpstan-ignore-line
+            new DateTimeImmutable($data['sentStart']), // @phpstan-ignore-line
+            new DateTimeImmutable($data['sentFinish']), // @phpstan-ignore-line
         );
     }
 

@@ -9,7 +9,7 @@ class Recipients
     /**
      * @var array<string>
      */
-    private $invalid = [];
+    private array $invalid = [];
 
     /**
      * @param array<string> $invalid
@@ -24,9 +24,7 @@ class Recipients
      */
     public static function fromArray(array $data): Recipients
     {
-        return new self(
-            $data['invalid']
-        );
+        return new self($data['invalid']); // @phpstan-ignore-line
     }
 
     /**
@@ -35,7 +33,7 @@ class Recipients
     public function toArray(): array
     {
         return [
-            'invalid' => $this->getInvalid()
+            'invalid' => $this->getInvalid(),
         ];
     }
 

@@ -6,35 +6,17 @@ namespace DigitalCz\GoSms\ValueObject\DetailMessage;
 
 class Stats
 {
-    /**
-     * @var float
-     */
-    private $price = 0.0;
+    private float $price = 0.0;
 
-    /**
-     * @var bool
-     */
-    private $hasDiacritics = false;
+    private bool $hasDiacritics = false;
 
-    /**
-     * @var int
-     */
-    private $smsCount = 0;
+    private int $smsCount = 0;
 
-    /**
-     * @var int
-     */
-    private $messagePartsCount = 0;
+    private int $messagePartsCount = 0;
 
-    /**
-     * @var int
-     */
-    private $recipientsCount = 0;
+    private int $recipientsCount = 0;
 
-    /**
-     * @var NumberTypes
-     */
-    private $numberTypes;
+    private NumberTypes $numberTypes;
 
     public function __construct(
         float $price,
@@ -42,7 +24,7 @@ class Stats
         int $smsCount,
         int $messagePartsCount,
         int $recipientsCount,
-        NumberTypes $numberTypes
+        NumberTypes $numberTypes,
     ) {
         $this->price = $price;
         $this->hasDiacritics = $hasDiacritics;
@@ -58,12 +40,12 @@ class Stats
     public static function fromArray(array $data): Stats
     {
         return new self(
-            $data['price'],
-            $data['hasDiacritics'],
-            $data['smsCount'],
-            $data['messagePartsCount'],
-            $data['recipientsCount'],
-            NumberTypes::fromArray($data['numberTypes'])
+            $data['price'], // @phpstan-ignore-line
+            $data['hasDiacritics'], // @phpstan-ignore-line
+            $data['smsCount'], // @phpstan-ignore-line
+            $data['messagePartsCount'], // @phpstan-ignore-line
+            $data['recipientsCount'], // @phpstan-ignore-line
+            NumberTypes::fromArray($data['numberTypes']), // @phpstan-ignore-line
         );
     }
 
