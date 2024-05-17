@@ -6,12 +6,11 @@
 [![codecov](https://codecov.io/gh/digitalcz/gosms/branch/master/graph/badge.svg)](https://codecov.io/gh/digitalcz/gosms)
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Provides communication with GoSMS.cz (see https://doc.gosms.cz/) in PHP via PSR-18 http client. 
-Implemented standards PSR18 http client, PSR17 Discovery and PSR16 cache.
+[GoSms](https://github.com/digitalcz/gosms) PHP library - provides communication with https://doc.gosms.cz in PHP using PSR-18 HTTP Client, PSR-17 HTTP Factories and PSR-16 SimpleCache.
 
 ## Install
 
-Via Composer
+Via [Composer](https://getcomposer.org/)
 
 ```bash
 $ composer require digitalcz/gosms
@@ -19,89 +18,97 @@ $ composer require digitalcz/gosms
 
 ## Configuration
 
-Example configuration in Symfony
+#### Example configuration in PHP
+
+```php
+use DigitalCz\GoSms\Auth\ApiKeyCredentials;
+use DigitalCz\GoSms\GoSms;
+
+// Via constructor options
+$goSms = new GoSms([
+    'client_id' => '...', 
+    'client_secret' => '...'
+]);
+
+// Or via methods
+$goSms = new GoSms();
+$goSms->setCredentials(new ApiKeyCredentials('...', '...'));
+```
+
+#### Available constructor options
+*  `client_id`           - string; ApiKey client_id key
+*  `client_secret`       - string; ApiKey client_secret key
+*  `credentials`         - DigitalCz\GoSms\Auth\Credentials instance
+*  `client`              - DigitalCz\GoSms\GoSmsClient instance with your custom PSR17/18 objects
+*  `http_client`         - Psr\Http\Client\ClientInterface instance of your custom PSR18 client
+*  `cache`               - Psr\SimpleCache\CacheInterface for caching Credentials Tokens
+*  `api_base`            - string; override the base API url
+
+#### Available configuration methods
+
+```php
+use DigitalCz\GoSms\Auth\Token;
+use DigitalCz\GoSms\Auth\TokenCredentials;
+use DigitalCz\GoSms\GoSms;
+use DigitalCz\GoSms\GoSmsClient;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
+use Symfony\Component\HttpClient\Psr18Client;
+
+$goSms = new GoSms();
+// To set your own PSR-18 HTTP Client, if not provided Psr18ClientDiscovery is used
+$goSms->setClient(new GoSmsClient(new Psr18Client()));
+// If you already have the auth-token, i can use TokenCredentials
+$goSms->setCredentials(new TokenCredentials(new Token('...', 123)));
+// Cache will be used to store auth-token, so it can be reused in later requests
+$goSms->setCache(new Psr16Cache(new FilesystemAdapter()));
+// Overwrite API base
+$goSms->setApiBase('https://example.com/api');
+```
+
+#### Example configuration in Symfony
+
 ```yaml
-#gosms.yaml for example
-parameters:
-    goSmsChannelId: '%env(int:GO_SMS_CHANNEL)%'
-
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    gosms_cache_provider:
-        class: Symfony\Component\Cache\Psr16Cache
-        arguments: ['@cache.app']
-
-    DigitalCz\GoSms\Auth\AccessTokenProvider:
-        arguments:
-            - '@gosms_cache_provider'
-
-    DigitalCz\GoSms\Auth\AccessTokenProviderInterface: '@DigitalCz\GoSms\Auth\AccessTokenProvider'
-
-    DigitalCz\GoSms\GoSms:
-        arguments:
-            $clientId: '%env(GO_SMS_CLIENT_ID)%'
-            $clientSecret: '%env(GO_SMS_CLIENT_SECRET)%'
+  DigitalCz\GoSms\GoSms:
+    $options:
+      # minimal config
+      access_key: '%gosms.client_id%'
+      secret_key: '%gosms.client_secret%'
+      
+      # other options
+      cache: '@psr16.cache'
+      http_client: '@psr18.http_client'
 ```
 
 ## Usage
 
-You can use DigitalCz\GoSms\Auth\AccessTokenProvider which use PSR6 CachingInterface (see https://www.php-fig.org/psr/psr-6/) for automatically store token.
-Or you can implement your own by DigitalCz\GoSms\Auth\AccessTokenProviderInterface
-
-Client used value objects for Requests and Responses. If you want working with your own objects, you can implement
-DigitalCz\GoSms\Response\ResponseResolverInterface
+#### Create and send Message
 
 ```php
-// access token provider via Symfony
-$psr6Cache = new Symfony\Component\Cache\Adapter\FilesystemAdapter();
-$psr16Cache = new Symfony\Component\Cache\Psr16Cache($psr6Cache);
+$goSms = new DigitalCz\GoSms\GoSms(['client_id' => '...', 'client_secret' => '...']);
 
-$accessTokenProvider = new DigitalCz\GoSms\Auth\AccessTokenProvider(
-    $psr16Cache
+$organization = $goSms->organization()->detail();
+
+echo "Detail organization " . var_dump($organization) . PHP_EOL;
+
+$messages = $goSms->messages();
+
+$message = $messages->create(
+    [
+        'message' => 'Hello Hans, please call me back.',
+        'recipients' => '+420775300500',
+        'channel' => 6,
+    ],
 );
+echo "Created Message " . $message->link() . PHP_EOL;
 
-// GoSMS service
-$goSmsService = new DigitalCz\GoSms\GoSms(
-    'your_gosms_client_id',
-    'your_gosms_secret_client_id',
-    $accessTokenProvider
-);
+$message = $messages->get('example_message_id');
+echo "Detail Message " . var_dump($message) . PHP_EOL;
 
-//return detail about organization DigitalCz\GoSms\ValueObject\DetailOrganization
-$organizationDetail = $goSmsService->getDetailOrganization(); 
+$messages->delete('example_message_id');
+echo "Message was deleted " . PHP_EOL;
 
-//send message via DigitalCz\GoSms\ValueObject\SendMessage
-$message = new DigitalCz\GoSms\ValueObject\SendMessage('Hello Hans!', ['+420775300500'], 1);
-
-//return DigitalCz\GoSms\ValueObject\SentMessage
-$sentMessage = $goSmsService->sendMessage($message); 
-$smsId = $sentMessage->getMessageId();
-
-//return detail about message DigitalCz\GoSms\ValueObject\DetailMessage
-$messageDetail = $goSmsService->detailMessage($smsId);  
-
-//return replies of message DigitalCz\GoSms\ValueObject\RepliesMessage
-$messageReplies = $goSmsService->repliesMessage($smsId);    
-
-//delete message
-$goSmsService->deleteMessage($smsId); 
-```
-
-#### Using your own http client
-You can provide PSR18 http client (and PSR17 factories) when creating instance of classes, if no arguments are provided Psr18ClientDiscovery and Psr17FactoryDiscovery will be used (see https://php-http.readthedocs.io/en/latest/discovery.html).
-```php
-....
-// example Symfony Psr18Client for RequestFactory
-$symfonyHttpClient = Symfony\Component\HttpClient\Psr18Client();
-
-$requestFactory = new DigitalCz\GoSms\Request\RequestFactory(
-    $symfonyHttpClient, 
-    $symfonyHttpClient   // symfony PSR18 client is also PSR17 factory
-);
-....
 ```
 
 ## Change log
@@ -111,10 +118,13 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
-$ composer tests
-$ composer phpstan
-$ composer cs       # codesniffer
-$ composer csfix    # code beautifier
+$ composer csfix    # fix codestyle
+$ composer checks   # run all checks 
+
+# or separately
+$ composer tests    # run phpunit
+$ composer phpstan  # run phpstan
+$ composer cs       # run codesniffer
 ```
 
 ## Contributing
@@ -136,15 +146,10 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/digitalcz/gosms.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/digitalcz/gosms/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/digitalcz/gosms.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/digitalcz/gosms.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/digitalcz/gosms.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/digitalcz/gosms
-[link-travis]: https://travis-ci.org/digitalcz/gosms
-[link-scrutinizer]: https://scrutinizer-ci.com/g/digitalcz/gosms/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/digitalcz/gosms
 [link-downloads]: https://packagist.org/packages/digitalcz/gosms
 [link-author]: https://github.com/digitalcz
 [link-contributors]: ../../contributors
+

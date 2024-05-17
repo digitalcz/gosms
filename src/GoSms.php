@@ -4,100 +4,187 @@ declare(strict_types=1);
 
 namespace DigitalCz\GoSms;
 
-use DigitalCz\GoSms\Auth\AccessTokenProviderInterface;
-use DigitalCz\GoSms\Http\Client;
-use DigitalCz\GoSms\Request\RequestFactory;
-use DigitalCz\GoSms\Response\ResponseObjectResolver;
-use DigitalCz\GoSms\Response\ResponseResolverInterface;
-use DigitalCz\GoSms\ValueObject\ClientCredentials;
-use DigitalCz\GoSms\ValueObject\DetailMessage;
-use DigitalCz\GoSms\ValueObject\DetailOrganization;
-use DigitalCz\GoSms\ValueObject\RepliesMessage;
-use DigitalCz\GoSms\ValueObject\SendMessage;
-use DigitalCz\GoSms\ValueObject\SentMessage;
-use Http\Discovery\Psr17FactoryDiscovery;
-use Http\Discovery\Psr18ClientDiscovery;
+use DigitalCz\GoSms\Auth\ApiKeyCredentials;
+use DigitalCz\GoSms\Auth\CachedCredentials;
+use DigitalCz\GoSms\Auth\Credentials;
+use DigitalCz\GoSms\Endpoint\AuthEndpoint;
+use DigitalCz\GoSms\Endpoint\EndpointInterface;
+use DigitalCz\GoSms\Endpoint\MessagesEndpoint;
+use DigitalCz\GoSms\Endpoint\OrganizationEndpoint;
+use InvalidArgumentException;
+use LogicException;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\CacheInterface;
 
-final class GoSms
+final class GoSms implements EndpointInterface
 {
-    /**
-     * @var Client
-     */
-    private $client;
+    public const VERSION = '2.0.0';
+    public const API_BASE = 'https://app.gosms.cz';
+
+    /** The base URL for requests */
+    private string $apiBase = self::API_BASE;
+
+    /** The credentials used to authenticate to API */
+    private Credentials $credentials;
+
+    /** The client used to send requests */
+    private GoSmsClientInterface $client;
+
+    /** @var array<string, string> */
+    private array $versions = [];
 
     /**
-     * @var RequestFactory
+     * Available options:
+     *  client_id           - string; ApiKey access key
+     *  client_secret       - string; ApiKey secret key
+     *  credentials         - DigitalCz\GoSms\Auth\Credentials instance
+     *  client              - DigitalCz\GoSms\GoSmsClient instance with your custom PSR17/18 objects
+     *  http_client         - Psr\Http\Client\ClientInterface instance of your custom PSR18 client
+     *  cache               - Psr\SimpleCache\CacheInterface for caching Credentials auth Tokens
+     *  api_base            - string; override the base API url
+     *
+     * @param array{
+     *      access_key?: string,
+     *      secret_key?: string,
+     *      credentials?: Credentials,
+     *      client?: GoSmsClient,
+     *      http_client?: ClientInterface,
+     *      cache?: CacheInterface,
+     *      testing?: bool,
+     *      api_base?: string,
+     *      signature_tolerance?: int
+     * } $options
      */
-    private $requestFactory;
+    public function __construct(array $options = [])
+    {
+        $httpClient = $options['http_client'] ?? null;
+        $this->setClient($options['client'] ?? new GoSmsClient($httpClient));
+        $this->addVersion('digitalcz/gosms', self::VERSION);
+        $this->addVersion('PHP', PHP_VERSION);
 
-    /**
-     * @var ResponseResolverInterface
-     */
-    private $responseObjectFactory;
+        if (isset($options['api_base'])) {
+            if (!is_string($options['api_base'])) {
+                throw new InvalidArgumentException('Invalid value for "api_base" option');
+            }
 
-    public function __construct(
-        string $clientId,
-        string $clientSecret,
-        AccessTokenProviderInterface $accessTokenProvider,
-        ClientInterface $httpClient = null,
-        RequestFactoryInterface $httpRequestFactory = null,
-        StreamFactoryInterface $httpStreamFactory = null,
-        ResponseResolverInterface $responseResolver = null
-    ) {
-        $httpClient = $httpClient ?? Psr18ClientDiscovery::find();
-        $httpRequestFactory = $httpRequestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
-        $httpStreamFactory = $httpStreamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
+            $this->setApiBase($options['api_base']);
+        }
 
-        $this->requestFactory = new RequestFactory($httpRequestFactory, $httpStreamFactory);
-        $this->responseObjectFactory = $responseResolver ?? new ResponseObjectResolver();
+        if (isset($options['client_id'], $options['client_secret'])) {
+            $this->setCredentials(new ApiKeyCredentials($options['client_id'], $options['client_secret']));
+        }
 
-        $this->client = new Client(
-            new ClientCredentials($clientId, $clientSecret),
-            $httpClient,
-            $accessTokenProvider,
-            $this->requestFactory,
-            $this->responseObjectFactory
-        );
+        if (isset($options['credentials'])) {
+            if (!$options['credentials'] instanceof Credentials) {
+                throw new InvalidArgumentException('Invalid value for "credentials" option');
+            }
+
+            $this->setCredentials($options['credentials']);
+        }
+
+        // if cache is provided, wrap Credentials with cache decorator
+        if (isset($options['cache'])) {
+            if (!$options['cache'] instanceof CacheInterface) {
+                throw new InvalidArgumentException('Invalid value for "cache" option');
+            }
+
+            $this->setCache($options['cache']);
+        }
     }
 
-    public function getDetailOrganization(): DetailOrganization
+    public function setCache(CacheInterface $cache): void
     {
-        $request = $this->requestFactory->requestDetailOrganization();
-        $response = $this->client->request($request);
+        $credentials = $this->getCredentials();
 
-        return $this->responseObjectFactory->resolveDetailOrganization($response);
+        // if credentials are already decorated, do not double wrap, but get inner
+        if ($credentials instanceof CachedCredentials) {
+            $credentials = $credentials->getInner();
+        }
+
+        $this->setCredentials(new CachedCredentials($credentials, $cache));
     }
 
-    public function sendMessage(SendMessage $message): SentMessage
+    public function getCredentials(): Credentials
     {
-        $request = $this->requestFactory->requestSendMessage($message);
-        $response = $this->client->request($request);
+        if (!isset($this->credentials)) {
+            throw new LogicException(
+                'No credentials were provided, Please use setCredentials() ' .
+                'or constructor options to set them.',
+            );
+        }
 
-        return $this->responseObjectFactory->resolveSendMessage($response);
+        return $this->credentials;
     }
 
-    public function detailMessage(int $messageId): DetailMessage
+    public function setCredentials(Credentials $credentials): void
     {
-        $request = $this->requestFactory->requestDetailMessage($messageId);
-        $response = $this->client->request($request);
-
-        return $this->responseObjectFactory->resolveDetailMessage($response);
+        $this->credentials = $credentials;
     }
 
-    public function deleteMessage(int $messageId): void
+    public function setClient(GoSmsClientInterface $client): void
     {
-        $request = $this->requestFactory->requestDeleteMessage($messageId);
-        $this->client->request($request);
+        $this->client = $client;
     }
 
-    public function repliesMessage(int $messageId): RepliesMessage
+    public function setApiBase(string $apiBase): void
     {
-        $request = $this->requestFactory->requestRepliesMessage($messageId);
-        $response = $this->client->request($request);
+        $this->apiBase = rtrim(trim($apiBase), '/');
+    }
 
-        return $this->responseObjectFactory->resolveRepliesMessage($response);
+    public function addVersion(string $tool, string $version = ''): void
+    {
+        $this->versions[$tool] = $version;
+    }
+
+    public function removeVersion(string $tool): void
+    {
+        unset($this->versions[$tool]);
+    }
+
+    /** @inheritDoc */
+    public function request(string $method, string $path = '', array $options = []): ResponseInterface
+    {
+        $options['user-agent'] = $this->createUserAgent();
+
+        // disable authorization header if options[no_auth]=true
+        if (($options['no_auth'] ?? false) !== true) {
+            $options['auth_bearer'] ??= $this->createBearer();
+        }
+
+        return $this->client->request($method, $this->apiBase . $path, $options);
+    }
+
+    public function auth(): AuthEndpoint
+    {
+        return new AuthEndpoint($this);
+    }
+
+    public function organization(): OrganizationEndpoint
+    {
+        return new OrganizationEndpoint($this);
+    }
+
+    public function messages(): MessagesEndpoint
+    {
+        return new MessagesEndpoint($this);
+    }
+
+    private function createUserAgent(): string
+    {
+        $userAgent = '';
+
+        foreach ($this->versions as $tool => $version) {
+            $userAgent .= $tool;
+            $userAgent .= $version !== '' ? ":$version" : '';
+            $userAgent .= ' ';
+        }
+
+        return $userAgent;
+    }
+
+    private function createBearer(): string
+    {
+        return $this->getCredentials()->provide($this)->getToken();
     }
 }
