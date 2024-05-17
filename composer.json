@@ -51,7 +51,7 @@
     "phpunit/phpunit": "^9.5",
     "symfony/cache": "^6.0",
     "symfony/error-handler": "^7.0",
-    "symfony/http-client": "^6.0",
+    "symfony/http-client": "^6.0 || ^7.0",
     "symfony/var-dumper": "^6.0"
   },
   "autoload": {
