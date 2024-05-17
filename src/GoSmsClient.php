@@ -12,7 +12,6 @@ use DigitalCz\GoSms\Exception\RuntimeException;
 use DigitalCz\GoSms\Exception\ServerException;
 use DigitalCz\GoSms\Exception\UnauthorizedException;
 use DigitalCz\GoSms\Resource\BaseResource;
-use DigitalCz\GoSms\Resource\ResourceInterface;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Http\Message\MultipartStream\MultipartStreamBuilder;
@@ -301,10 +300,6 @@ class GoSmsClient implements GoSmsClientInterface
 
             if ($value instanceof DateTimeInterface) {
                 return $value->format(DateTimeInterface::ATOM);
-            }
-
-            if ($value instanceof ResourceInterface) {
-                return $value->self();
             }
 
             return $value;

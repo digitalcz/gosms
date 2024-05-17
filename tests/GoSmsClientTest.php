@@ -335,7 +335,7 @@ class GoSmsClientTest extends TestCase
 
         $lastRequest = $httpClient->getLastRequest();
         self::assertSame('application/json', $lastRequest->getHeaderLine('Content-Type'));
-        $expectedJson = '{"datetime":"2020-01-01T13:30:00+02:00","resource":"foo-bar","nested":{"foo":"bar","resource":"moo-baz"}}';
+        $expectedJson = '{"datetime":"2020-01-01T13:30:00+02:00","resource":{"links":{"self":"foo-bar"}},"nested":{"foo":"bar","resource":{"links":{"self":"moo-baz"}}}}';
         self::assertSame($expectedJson, (string)$lastRequest->getBody());
     }
 

@@ -13,4 +13,4 @@ $goSms = new GoSms([
 
 $organization = $goSms->organization()->detail();
 
-echo "Detail Message " . var_dump($organization) . PHP_EOL;
+echo "Detail Message " . var_dump($organization) . PHP_EOL; // @phpstan-ignore-line

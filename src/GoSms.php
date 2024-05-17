@@ -45,8 +45,8 @@ final class GoSms implements EndpointInterface
      *  api_base            - string; override the base API url
      *
      * @param array{
-     *      access_key?: string,
-     *      secret_key?: string,
+     *      client_id?: string,
+     *      client_secret?: string,
      *      credentials?: Credentials,
      *      client?: GoSmsClient,
      *      http_client?: ClientInterface,

@@ -107,7 +107,7 @@ abstract class EndpointTestCase extends TestCase
 
     protected static function assertLastRequestHeader(string $expected, string $header): void
     {
-        self::assertStringStartsWith($expected, self::getLastRequest()->getHeaderLine($header));
+        self::assertStringStartsWith($expected, self::getLastRequest()->getHeaderLine($header)); // @phpstan-ignore-line
     }
 
     /**

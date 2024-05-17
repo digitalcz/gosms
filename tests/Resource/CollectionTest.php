@@ -82,7 +82,7 @@ final class CollectionTest extends TestCase
         self::assertSame(DummyResource::COLLECTION_EXAMPLE, $collection->jsonSerialize());
     }
 
-    public function testGetSelf(): void
+    public function testGetLink(): void
     {
         $expectedResponse = new Response(200, [], GoSmsClient::jsonEncode(DummyResource::COLLECTION_EXAMPLE));
 
@@ -91,7 +91,7 @@ final class CollectionTest extends TestCase
 
         $collection = new Collection($parsedResponse, DummyResource::class);
         $this->expectException(RuntimeException::class);
-        $collection->self();
+        $collection->link();
     }
 
     public function testId(): void

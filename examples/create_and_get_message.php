@@ -23,7 +23,7 @@ $message = $messages->create(
 echo "Created Message " . $message->link() . PHP_EOL;
 
 $message = $messages->get('example_message_id');
-echo "Detail Message " . var_dump($message) . PHP_EOL;
+echo "Detail Message " . var_dump($message) . PHP_EOL; // @phpstan-ignore-line
 
 $messages->delete('example_message_id');
 echo "Message was deleted " . PHP_EOL;

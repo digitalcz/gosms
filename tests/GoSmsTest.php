@@ -23,12 +23,12 @@ class GoSmsTest extends TestCase
 {
     public function testCreateWithCredentials(): void
     {
-        $goSms = new GoSms(['access_key' => 'foo', 'secret_key' => 'bar']);
+        $goSms = new GoSms(['client_id' => 'foo', 'client_secret' => 'bar']);
 
         $credentials = $goSms->getCredentials();
         self::assertInstanceOf(ApiKeyCredentials::class, $credentials);
-        self::assertSame('foo', $credentials->getAccessKey());
-        self::assertSame('bar', $credentials->getSecretKey());
+        self::assertSame('foo', $credentials->getClientId());
+        self::assertSame('bar', $credentials->getClientSecret());
     }
 
     public function testPleaseProvideCredentialsException(): void
@@ -47,8 +47,8 @@ class GoSmsTest extends TestCase
     {
         $goSms = new GoSms(
             [
-                'access_key' => 'foo',
-                'secret_key' => 'bar',
+                'client_id' => 'foo',
+                'client_secret' => 'bar',
                 'cache' => new Psr16Cache(new FilesystemAdapter()),
             ],
         );
@@ -57,8 +57,8 @@ class GoSmsTest extends TestCase
         self::assertInstanceOf(CachedCredentials::class, $credentials);
         $credentials = $credentials->getInner();
         self::assertInstanceOf(ApiKeyCredentials::class, $credentials);
-        self::assertSame('foo', $credentials->getAccessKey());
-        self::assertSame('bar', $credentials->getSecretKey());
+        self::assertSame('foo', $credentials->getClientId());
+        self::assertSame('bar', $credentials->getClientSecret());
     }
 
     public function testCreateWithDoubleCachedCredentials(): void
