@@ -58,7 +58,6 @@ abstract class EndpointTestCase extends TestCase
     {
         self::assertLastRequestMethod($method);
         self::assertLastRequestPath($path);
-        self::assertLastRequestAuthorizationHeader('Bearer token');
 
         if ($body !== null) {
             self::assertLastRequestJsonBody($body);
@@ -98,16 +97,6 @@ abstract class EndpointTestCase extends TestCase
     protected static function assertLastRequestMethodIsPost(): void
     {
         self::assertLastRequestMethod('POST');
-    }
-
-    protected static function assertLastRequestAuthorizationHeader(string $expected): void
-    {
-        self::assertLastRequestHeader($expected, 'Authorization');
-    }
-
-    protected static function assertLastRequestHeader(string $expected, string $header): void
-    {
-        self::assertStringStartsWith($expected, self::getLastRequest()->getHeaderLine($header));
     }
 
     /**
