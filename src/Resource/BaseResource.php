@@ -91,15 +91,21 @@ class BaseResource implements ResourceInterface
 
     public function id(): string
     {
-        if (!isset($this->_result['id'])) {
-            throw new RuntimeException('Resource has no ID');
+        if (isset($this->_result['id']) && is_string($this->_result['id'])) {
+            return $this->_result['id'];
         }
 
-        if (!is_string($this->_result['id'])) {
-            throw new RuntimeException('Invalid ID');
+        $link = $this->_result['link'] ?? null;
+
+        if ($link === null && is_array($this->_result['links'])) {
+            $link = $this->_result['links']['self'] ?? null;
         }
 
-        return $this->_result['id'];
+        if (!is_string($link)) {
+            throw new RuntimeException('Cannot extract ID from link');
+        }
+
+        return $this->getIdFromString($link);
     }
 
     /**
@@ -246,6 +252,15 @@ class BaseResource implements ResourceInterface
         }
 
         return $type;
+    }
+
+    protected function getIdFromString(string $string): string
+    {
+        if (preg_match('/\/(\d+)/', $string, $matches) !== 1) {
+            throw new LogicException('Cannot id ' . static::class . ' from ' . $string);
+        }
+
+        return $matches[1];
     }
 
     protected function resolveCollectionMappingType(string $phpDoc): string

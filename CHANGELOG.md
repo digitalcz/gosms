@@ -4,6 +4,11 @@ All notable changes will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.0.1] - 2024-05-20
+### Changed
+- Update `Messages` endpoint. Sent message return `SentMessage` object
+- Update `BaseResource` object to fix return id of object from link
+
 ## [2.0.0] - 2024-05-17
 ### Added
 - Add `Organization` endpoint
