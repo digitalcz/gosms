@@ -73,8 +73,8 @@ services:
   DigitalCz\GoSms\GoSms:
     $options:
       # minimal config
-      access_key: '%gosms.client_id%'
-      secret_key: '%gosms.client_secret%'
+      client_id: '%gosms.client_id%'
+      client_secret: '%gosms.client_secret%'
       
       # other options
       cache: '@psr16.cache'

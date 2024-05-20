@@ -7,6 +7,7 @@ namespace DigitalCz\GoSms\Endpoint;
 use DigitalCz\GoSms\GoSms;
 use DigitalCz\GoSms\Resource\Message;
 use DigitalCz\GoSms\Resource\MessageReplies;
+use DigitalCz\GoSms\Resource\MessageSent;
 use DigitalCz\GoSms\Resource\MessageTest;
 
 /**
@@ -22,9 +23,9 @@ final class MessagesEndpoint extends ResourceEndpoint
     /**
      * @param mixed[] $body
      */
-    public function create(array $body): Message
+    public function create(array $body): MessageSent
     {
-        return $this->makeResource($this->postRequest('', ['json' => $body]));
+        return $this->createResource($this->postRequest('', ['json' => $body]), MessageSent::class);
     }
 
     /**
