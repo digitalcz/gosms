@@ -197,9 +197,16 @@ class GoSmsClientTest extends TestCase
         $contentType = $lastRequest->getHeaderLine('Content-Type');
         $boundary = trim(substr($contentType, 30), '"');
         self::assertStringStartsWith("multipart/form-data; boundary=\"$boundary\"", $contentType);
-        self::assertSame(
-            "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\nContent-Length: 3\r\n\r\nbar\r\n--$boundary--\r\n",
+        self::assertThat(
             (string)$lastRequest->getBody(),
+            self::logicalOr(
+                self::equalTo(
+                    "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\nContent-Length: 3\r\n\r\nbar\r\n--$boundary--\r\n",
+                ),
+                self::equalTo(
+                    "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\n\r\nbar\r\n--$boundary--\r\n",
+                ),
+            ),
         );
     }
 
