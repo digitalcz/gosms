@@ -32,6 +32,6 @@ class ApiKeyCredentialsTest extends TestCase
         $token = $credentials->provide($goSms);
 
         self::assertSame('moo', $token->getToken());
-        self::assertSame(123, $token->getExp());
+        self::assertSame(123, $token->getTtl());
     }
 }

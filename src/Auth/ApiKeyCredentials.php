@@ -44,6 +44,6 @@ final class ApiKeyCredentials implements Credentials
         ];
         $token = $goSms->auth()->authorize($body);
 
-        return new Token($token->accessToken, $token->expiresIn);
+        return new Token($token->accessToken, time() + $token->expiresIn);
     }
 }
