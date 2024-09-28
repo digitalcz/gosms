@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [2.0.2] - 2024-09-28
+### Fixed
+- Fix treating TTL of access token as expiration timestamp
+
 ## [2.0.1] - 2024-05-20
 ### Changed
 - Update `Messages` endpoint. Sent message return `SentMessage` object
